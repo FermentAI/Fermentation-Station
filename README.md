@@ -15,3 +15,5 @@ Check to see if your system's environment controls are working and test the effi
 ## Quick TO-DO list:
 - [ ] get matlab model to run on pyhon
 - [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
+- [ ] set up frontend in a model-agnostic way
+- [ ] widgets or dashboard to change inputs and visualize outputs?
