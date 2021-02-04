@@ -13,5 +13,5 @@ Check to see if your system's environment controls are working and test the effi
 - Sally is a senior fermentation engineer at FermentAI. Her intern has just told her about Fermentation Station, and now she's trying to develop new models for their specific processes. Thankfully, Fermenation Station is capable of loading custom bioreactor models and offer the same visualization and analysis capabalities. Sally is able to customize the Fermentation Station and distriubute among her colleagues.  
 
 ## Quick TO-DO list:
-- [] get matlab model to run on pyhon
-- [] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
+- [ ] get matlab model to run on pyhon
+- [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
