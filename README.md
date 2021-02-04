@@ -4,4 +4,4 @@ Check to see if your system's environment controls are working and test the effi
 
 ## Use cases:
 - something something
--something
+- something
