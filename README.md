@@ -5,6 +5,7 @@ Check to see if your system's environment controls are working and test the effi
 \
 \
 ![bioreactor](http://www.industrialpenicillinsimulation.com/images/IndPenSim_input_outputs_V2.png)
+Source: http://www.industrialpenicillinsimulation.com
 ## Use cases:
 - John is a chemical engineering student at UW. Tryng to learn control theory. run some optimization in Fermentation Station
 
