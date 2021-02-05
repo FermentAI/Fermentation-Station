@@ -24,3 +24,6 @@ Source: http://www.industrialpenicillinsimulation.com
 - [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
 - [ ] set up frontend in a model-agnostic way
 - [ ] widgets or dashboard to change inputs and visualize outputs?
+
+## Resources:
+- https://www.streamlit.io
