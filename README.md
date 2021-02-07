@@ -20,7 +20,7 @@ Source: http://www.industrialpenicillinsimulation.com
 - Sally is a senior fermentation engineer at FermentAI. Her intern has just told her about Fermentation Station, and now she's trying to develop new models for their specific processes. Thankfully, Fermenation Station is capable of loading custom bioreactor models and offer the same visualization and analysis capabalities. Sally is able to customize the Fermentation Station and distriubute among her colleagues.  
 
 ## Quick TO-DO list:
-- [ ] get matlab model to run on pyhon
+- [ ] get matlab model to run on python
 - [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
 - [ ] set up frontend in a model-agnostic way
 - [ ] widgets or dashboard to change inputs and visualize outputs?
