@@ -18,7 +18,7 @@ Source: http://www.industrialpenicillinsimulation.com
 
 - Sally is a senior fermentation engineer at FermentAI. Her intern has just told her about Fermentation Station, and now she's trying to develop new models for their specific processes. Thankfully, Fermenation Station is capable of __loading custom bioreactor models and offer the same visualization and analysis capabalities__. Sally is able to customize the Fermentation Station and distriubute it among her colleagues.
 
-- Jerry wants to verify his bioreactor's results and with a credible model without creating hundreds of batches and wasting tons of money. The Fermentation Station is a tool that can compare Jerry's process by comparing his process parameters (ie. flow rates, nitrogen, temperature, pH, dissolved oxygen and pressure sensors) with a simulation. Jerry can run the simulation as many times as he likes to see if his production levels match those of the simulation.
+- Jerry wants to verify his bioreactor's results and with a credible model without creating hundreds of batches and wasting tons of money. The Fermentation Station is a tool that can __validate the process by comparing input and output parameters (ie. flow rates, nitrogen, temperature, pH, dissolved oxygen and pressure) with a simulation__. Jerry can run the simulation as many times as he likes to see if his production levels match those of the simulation.
 
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completly substituting ODEs
 
