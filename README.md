@@ -19,6 +19,7 @@ Source: http://www.industrialpenicillinsimulation.com
 - Sally is a senior fermentation engineer at FermentAI. Her intern has just told her about Fermentation Station, and now she's trying to develop new models for their specific processes. Thankfully, Fermenation Station is capable of __loading custom bioreactor models and offer the same visualization and analysis capabalities__. Sally is able to customize the Fermentation Station and distriubute it among her colleagues.
 
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completly substituting ODEs
+- Compare with real data?
 
 ## Quick TO-DO list:
 - [ ] get matlab model to run on python
