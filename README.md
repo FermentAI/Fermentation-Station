@@ -20,7 +20,21 @@ Source: http://www.industrialpenicillinsimulation.com
 
 - Jerry wants to verify his bioreactor's results and with a credible model without creating hundreds of batches and wasting tons of money. The Fermentation Station is a tool that can __validate the process by comparing input and output parameters (ie. flow rates, nitrogen, temperature, pH, dissolved oxygen and pressure) with a simulation__. Jerry can run the simulation as many times as he likes to see if his production levels match those of the simulation.
 
+- Patricia wants to check if her facility's bioreactor parts are working. She has made measurements for parameters along each reactor pathway. She can __use Fermentation Station to model her process at different settings and compare the off-line and on-line variables to those of the factory reactor__. A careful analysis of these results will tell what part(s) of the process require(s) maintenance.
+
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completly substituting ODEs
+
+## User Checklist:
+- [ ] Decide between advanced preferences to create a model or choose a simple model.
+- [ ] Check the model and differential equations that you want.
+- [ ] Check your parameters and any addtional settings.
+- [ ] Check for data compatibility with the model; user input should align with the simulation output variables.
+- [ ] Before the run, specify the input as a constant value or function
+- [ ] Before the run, specify how many simulations you want to run
+- [ ] Before the run, specify your control and variable parameters
+- [ ] Run your simulation.
+- [ ] Open a window that helps you select different output variables and use those to generate plots.
+- [ ] Export the plots and/or raw data.
 
 ## Quick TO-DO list:
 - [ ] get matlab model to run on python
