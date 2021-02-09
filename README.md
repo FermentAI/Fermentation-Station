@@ -30,5 +30,6 @@ Source: http://www.industrialpenicillinsimulation.com
 - dashboard / user interface: https://www.streamlit.io
 - PID controller implementation: https://jckantor.github.io/CBE30338/04.01-Implementing_PID_Control_with_Python_Yield_Statement.html
 - simple reactor example: https://jckantor.github.io/CBE30338/02.07-Fed-Batch-Bioreactor.html
+- complex reactor example: https://jckantor.github.io/CBE30338/04.11-Implementing-PID-Control-in-Nonlinear-Simulations.html
 - math input for variables/disturbances: https://docs.sympy.org/latest/modules/utilities/lambdify.html
 - defining default model parameters and simulation settings: https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-python/
