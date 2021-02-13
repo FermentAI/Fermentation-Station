@@ -1,5 +1,5 @@
-# Fermentation Station
-Here's an interactive tool to see how the fermentation process looks on a large scale. You can make predictions of fermentation outputs based on online measurements.
+# Reactor Modeling Sandbox
+Here's an interactive tool to see how chemical reaction processes looks on a large scale. You can make predictions reactor outputs based on online measurements.
 Check to see if your system's environment controls are working and test the efficiency of your machine.
 \
 \
@@ -8,19 +8,17 @@ Check to see if your system's environment controls are working and test the effi
 Source: http://www.industrialpenicillinsimulation.com
 ## Use cases:
 
-- Meet Mary. Mary is an upstream process developer at FermentAI trying to optimize bioproduction of silk to be used for sustainable textile products. She believes that a better cooling system will improve overall protein yields, but needs to convince upper maganment to make the investment. To explain the process to non-engineers, she decides to __run simulations__ in the Fermenation Station. She uses the default penicilin fermentation model, but generalizes the simulations results to her specific use case in silk production. With a few clicks, she __varies the cooling water flow rate and temperature, and introduces distrubances to simulate faulty equipment__. She then __generates protein yield curves for the different conditions__, showing the importance of temperature control throughout the fermentation process. Upper managment can clearly see the performance improvement and decides to invest in a new cooling system for Mary.
+- Meet Mary. Mary is an upstream process developer trying to optimize bioproduction of silk to be used for sustainable textile products. She believes that a better cooling system will improve overall protein yields, but needs to convince upper maganment to make the investment. To explain the process to non-engineers, she decides to __run simulations__ in the Reaction Modeling Sandbox. She uses the default penicilin fermentation model, but generalizes the simulations results to her specific use case in silk production. With a few clicks, she __varies the cooling water flow rate and temperature, and introduces disturbances to simulate faulty equipment__. She then __generates protein yield curves for the different conditions__, showing the importance of temperature control throughout the fermentation process. Upper managment can clearly see the performance improvement and decides to invest in a new cooling system for Mary.
 
-- John is a chemical engineering undergrad at UW. He is currently taking a class on control theory but he's having trouble grasping feedback loops. His professor has suggested to use Fermentation Station to gain an intuition for the different variables and tunning parameters. Fortunantly, he is able to __implement his own control subroutines__ into the exisiting bioreactor model and simulate the system response under different control configurations.
+- John is a chemical engineering undergrad at UW. He is currently taking a class on control theory but he's having trouble grasping feedback loops. His professor has suggested to use Reaction Modeling Sandbox to gain an intuition for the different variables and tunning parameters. Fortunantly, he is able to __implement his own control subroutines__ into the exisiting bioreactor model and simulate the system response under different control configurations.
 
-- Dwight is a data analyst at FermentAI. He has realized that off-line measurements are costly and time consumming, and that it may be possible to get good enough yield predictions based solely on on-line measurements. He is interested in testing several __machine learning models on the data available__ at Fermentation Station to see if this is actually the case. Later, he will __compare the different models on new simulation data__ and present it to upper managment, to hopefully receive the promotion to assistant data manager he's been dreaming of. 
+- Dwight is a data analyst for a fermentation company. He has realized that off-line measurements are costly and time consuming, and that it may be possible to get good enough yield predictions based solely on on-line measurements. He is interested in testing several __machine learning models on the data available__ at Reactor Modeling Sandbox to see if this is actually the case. Later, he will __compare the different models on new simulation data__ and present it to upper managment, to hopefully receive the promotion to assistant data manager he's been dreaming of. 
 
-- Jim's favorite pass time is to infuriate Dwight by messing up with the bioreactor without really affecting performance, so he never gets into trouble. He's eager to do some __sensitivity analysis__ on the new Fermenation Station models to see how far he can push the system and anger Dwight.
+- Jim's favorite pass time is to infuriate Dwight by messing up with the bioreactor without really affecting performance, so he never gets into trouble. He's eager to do some __sensitivity analysis__ on the new Reactor Modeling Sandbox models to see how far he can push the system and anger Dwight.
 
-- Sally is a senior fermentation engineer at FermentAI. Her intern has just told her about Fermentation Station, and now she's trying to develop new models for their specific processes. Thankfully, Fermenation Station is capable of __loading custom bioreactor models and offer the same visualization and analysis capabalities__. Sally is able to customize the Fermentation Station and distriubute it among her colleagues.
+- Sally is a senior fermentation engineer at the same company. Her intern has just told her about Reactor Modeling Sandbox, and now she's trying to develop new models for their specific processes. Thankfully, Reactor Modeling Sandbox is capable of __loading custom bioreactor models and offer the same visualization and analysis capabalities__. Sally is able to customize the Reactor Modeling Sandbox and distriubute it among her colleagues.
 
-- Jerry wants to verify his bioreactor's results and with a credible model without creating hundreds of batches and wasting tons of money. The Fermentation Station is a tool that can __validate the process by comparing input and output parameters (ie. flow rates, nitrogen, temperature, pH, dissolved oxygen and pressure) with a simulation__. Jerry can run the simulation as many times as he likes to see if his production levels match those of the simulation.
-
-- Patricia wants to check if her facility's bioreactor parts are working. She has made measurements for parameters along each reactor pathway. She can __use Fermentation Station to model her process at different settings and compare the off-line and on-line variables to those of the factory reactor__. A careful analysis of these results will tell what part(s) of the process require(s) maintenance.
+- Jerry wants to verify his bioreactor's results and with a credible model without creating hundreds of batches and wasting tons of money. The Reactor Modeling Station is a tool that can __validate the process by comparing input and output parameters (ie. flow rates, nitrogen, temperature, pH, dissolved oxygen and pressure) with a simulation__. Jerry can run the simulation as many times as he likes to see if his production levels match those of the simulation.
 
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completly substituting ODEs
 
@@ -41,6 +39,10 @@ Source: http://www.industrialpenicillinsimulation.com
 - [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
 - [ ] set up frontend in a model-agnostic way
 - [ ] widgets or dashboard to change inputs and visualize outputs?
+
+## Future Works:
+- Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completely substituting ODEs.
+- Allow the user to include their bioreactor build in the simulation and distinguish if parts are broken.
 
 ## Resources:
 - dashboard / user interface: https://www.streamlit.io
