@@ -6,7 +6,7 @@ Check to see if your system's environment controls are working and test the effi
 \
 ![bioreactor](http://www.industrialpenicillinsimulation.com/images/IndPenSim_input_outputs_V2.png)
 Source: http://www.industrialpenicillinsimulation.com
-
+# [Use cases](https://github.com/FermentAI/Fermentation-Station/blob/main/docs/use_cases.md#use-cases)
 ## User Checklist:
 - [ ] Decide between advanced preferences to create a model or choose a simple model.
 - [ ] Check the model and differential equations that you want.
