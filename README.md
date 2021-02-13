@@ -22,6 +22,7 @@ Source: http://www.industrialpenicillinsimulation.com
 
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completly substituting ODEs
 
+## [Use cases](https://github.com/FermentAI/Fermentation-Station/blob/main/docs/use_cases.md#use-cases)
 ## User Checklist:
 - [ ] Decide between advanced preferences to create a model or choose a simple model.
 - [ ] Check the model and differential equations that you want.
