@@ -21,10 +21,10 @@ Source: http://www.industrialpenicillinsimulation.com
 - [ ] Export the plots and/or raw data.
 
 ## Quick TO-DO list:
-- [ ] get matlab model to run on python
-- [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend 
+- [ ] get matlab model to run on python (better start with other models)
+- [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend (pyFOOMB)
 - [ ] set up frontend in a model-agnostic way
-- [ ] widgets or dashboard to change inputs and visualize outputs?
+- [ ] widgets or dashboard to change inputs and visualize outputs? (Dash)
 
 ## Future Works:
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completely substituting ODEs.
@@ -37,3 +37,4 @@ Source: http://www.industrialpenicillinsimulation.com
 - complex reactor example: https://jckantor.github.io/CBE30338/04.11-Implementing-PID-Control-in-Nonlinear-Simulations.html
 - math input for variables/disturbances: https://docs.sympy.org/latest/modules/utilities/lambdify.html
 - defining default model parameters and simulation settings: https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-python/
+- pyFOOMB: https://onlinelibrary.wiley.com/doi/full/10.1002/elsc.202000088
