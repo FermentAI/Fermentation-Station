@@ -1,0 +1,9 @@
+Parameter,Label,Value,Units
+Ea,Activation Energy,72750,J/gmol
+R,Gas Constant,8.314,J/gmol/K
+k0,Arrhenius Rate Constant,7.20E+10,1/min
+V,Volume,100,L
+rho,Density,1000,g/L
+Cp,Heat Capacity,0.239,J/g/K
+dHr,Enthalpy of Reaction,-5.00E+04,J/mol
+UA,Heat Transfer,5.00E+04,J/min/K
