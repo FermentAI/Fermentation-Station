@@ -1,4 +1,4 @@
-Parameter,Label,Value,Units
+Var,Label,Value,Units
 Ea,Activation Energy,72750,J/gmol
 R,Gas Constant,8.314,J/gmol/K
 k0,Arrhenius Rate Constant,7.20E+10,1/min
