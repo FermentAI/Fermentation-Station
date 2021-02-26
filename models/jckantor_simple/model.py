@@ -2,7 +2,7 @@ from pyfoomb import BioprocessModel
 import numpy as np
 
 # Defines the model class
-class Model(BioprocessModel):
+class MyModel(BioprocessModel):
 
     def rhs(self, t, y):
         # Unpacks the state vector. The states are alphabetically ordered.

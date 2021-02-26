@@ -4,6 +4,6 @@ Cf,Inlet Feed Concentration,1,mol/L,
 Tf,Inlet Feed Temperature,300,K,
 C0,Initial Concentration,0.5,mol/L,True
 T0,Initial Temperature,350,K,True
-Tc0,Coolant Feed Temperature,300,K,True
-qc,Nominal Coolant Flowerate,50,L/min,
+Tc0,Initial Coolant Feed Temperature,300,K,True
+qc,Nominal Coolant Flowerate,150,L/min,
 Vc,Cooling Jacket Volume,20,L,
