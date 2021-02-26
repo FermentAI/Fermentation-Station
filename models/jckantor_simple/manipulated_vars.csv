@@ -1,0 +1,7 @@
+﻿Var,Label,Value,Units,State
+Sf,Feed Substrate Concentation,10,g/L,
+F,Feed Flowrate,0.05,L/hr,
+X0,Initial Cell Concentration,0.05,g/L,TRUE
+P0,Initial Product Concentration,0,g/L,TRUE
+S0,Initial Substrate Concentration,10,g/L,TRUE
+V0,Initial Volume,1,L,TRUE

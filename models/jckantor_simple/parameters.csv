@@ -1,0 +1,5 @@
+Var,Label,Value,Units
+mu_max,Maximum Specific Growth Rate,0.2,1/hr
+Ks,Half-Saturation Constant,1,g/L
+Yxs,Cells per Substrate Yield,5.00E-01,g/g
+Ypx,Product per Cells Yield,0.2,g/g

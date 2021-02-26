@@ -59,7 +59,7 @@ class Vars():
         self.current = pd
 
     def read_vars(self):
-        return pd.read_csv(os.path.join(self.model_name, self.var_file)).set_index('Var').fillna(False)
+        return pd.read_csv(os.path.join(self.model_name, self.var_file)).set_index('Var').fillna(False).sort_index()
 
 
 class Simulator(Caretaker):
@@ -78,8 +78,9 @@ class Simulator(Caretaker):
     def run(self):
         ti = 0
         tf = self.time
-        dt = 0.01
-        time = np.linspace(ti,tf,int((tf-ti)/dt)+1)
+        n = 100
+        time = np.linspace(ti,tf,n)
+        dt = (tf-ti)/n
         data = [[] for _ in range(len(self._Caretaker__initial_values))]
         for t in time:
             # PID control calculations
@@ -97,4 +98,4 @@ class Simulator(Caretaker):
                 self.model.state[k] = r.values[-1]
                 data[i].append(r.values[-1])
 
-        return pd.DataFrame(data).T
+        return pd.DataFrame(data).T.set_index(time, 'Time')
