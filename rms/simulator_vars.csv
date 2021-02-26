@@ -1,4 +1,4 @@
 ﻿Var,Label,Value
 Ti,initial time,0
-Tf,final time,8
+Tf,final time,50
 n,number of steps,300
