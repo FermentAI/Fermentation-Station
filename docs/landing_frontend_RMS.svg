@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="landing_frontend_RMS.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 297 210"
+   height="210mm"
+   width="297mm">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:window-height="1017"
+     inkscape:window-width="1920"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="505.98701"
+     inkscape:cx="607.69158"
+     inkscape:zoom="0.7"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <rect
+       ry="2.2678576"
+       y="0.0016492308"
+       x="0.75595057"
+       height="210.5311"
+       width="296.7113"
+       id="rect1023"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.401;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000" />
+    <text
+       id="text1404"
+       y="16.341139"
+       x="103.44949"
+       style="font-size:10.5833px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="16.341139"
+         x="103.44949"
+         id="tspan1402"
+         sodipodi:role="line">Reactor Modeling Sandbox</tspan></text>
+    <rect
+       ry="0"
+       y="0.0016492308"
+       x="0.75595057"
+       height="209.57643"
+       width="76.107704"
+       id="rect1406"
+       style="fill:#77dfcd;fill-opacity:0.0911765;stroke:none;stroke-width:0.388256;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000" />
+    <text
+       id="text1410"
+       y="30.386532"
+       x="6.041666"
+       style="font-size:7.76111px;line-height:1.25;font-family:sans-serif;stroke-width:0.204755"
+       xml:space="preserve"><tspan
+         style="font-size:7.76111px;stroke-width:0.204755"
+         y="30.386532"
+         x="6.041666"
+         id="tspan1408"
+         sodipodi:role="line">Navigate</tspan></text>
+    <text
+       id="text1414"
+       y="71.49852"
+       x="6.208344"
+       style="font-size:7.76111px;line-height:1.25;font-family:sans-serif;stroke-width:0.204755"
+       xml:space="preserve"><tspan
+         style="font-size:7.76111px;stroke-width:0.204755"
+         y="71.49852"
+         x="6.208344"
+         id="tspan1412"
+         sodipodi:role="line">About the Model</tspan></text>
+    <text
+       id="text1418"
+       y="148.07416"
+       x="6.7375107"
+       style="font-size:7.76111px;line-height:1.25;font-family:sans-serif;stroke-width:0.204755"
+       xml:space="preserve"><tspan
+         style="font-size:7.76111px;stroke-width:0.204755"
+         y="148.07416"
+         x="6.7375107"
+         id="tspan1416"
+         sodipodi:role="line">About RMS</tspan></text>
+    <g
+       transform="matrix(0.04720583,0,0,0.04720583,9.9046856,171.27386)"
+       id="g1542">
+      <path
+         d="m 506.23467,-87.152284 c -181.92689,0 -329.4502,147.49745 -329.4502,329.450174 0,145.56216 94.39734,269.05334 225.29892,312.61659 16.46411,3.0489 22.51025,-7.14688 22.51025,-15.84918 0,-7.85482 -0.30747,-33.80931 -0.447,-61.33735 -91.6559,19.92903 -110.99582,-38.871 -110.99582,-38.871 -14.98616,-38.08036 -36.57916,-48.20377 -36.57916,-48.20377 -29.88964,-20.44838 2.25309,-20.02978 2.25309,-20.02978 33.08325,2.32542 50.50339,33.95141 50.50339,33.95141 29.38322,50.36643 77.07023,35.804 95.87012,27.38851 2.95589,-21.29587 11.49542,-35.82729 20.91604,-44.05416 -73.17383,-8.33284 -150.09938,-36.58174 -150.09938,-162.81694 0,-35.9668 12.87001,-65.35777 33.94626,-88.42871 -3.42098,-8.29924 -14.69679,-41.806234 3.19102,-87.185894 0,0 27.66497,-8.85475 90.62237,33.77054 26.27747,-7.30188 54.46178,-10.96057 82.4601,-11.08459 27.99828,0.12402 56.20327,3.78271 82.5324,11.08459 62.88249,-42.62529 90.5087,-33.77054 90.5087,-33.77054 17.93173,45.37966 6.65075,78.886654 3.22979,87.185894 21.12272,23.07094 33.9049,52.45932 33.9049,88.42871 0,126.53492 -77.07024,154.39885 -150.4301,162.55339 11.81582,10.22419 22.34488,30.27463 22.34488,61.00918 0,44.08001 -0.3824,79.55847 -0.3824,90.41051 0,8.76692 5.92987,19.04018 22.63169,15.80523 130.82924,-43.6123 225.10772,-167.05956 225.10772,-312.57264 0,-181.952724 -147.50262,-329.450174 -329.44758,-329.450174"
+         id="path2"
+         style="fill:#161614;stroke-width:2.58382" />
+      <path
+         d="m 300.17487,382.15757 c -0.72347,1.63555 -3.30212,2.12648 -5.64565,1.0051 -2.39003,-1.07487 -3.73362,-3.3073 -2.95847,-4.9506 0.71055,-1.68465 3.2892,-2.1549 5.67407,-1.02319 2.3952,1.07227 3.75946,3.32539 2.93005,4.96869 m 16.20573,14.45905 c -1.57096,1.4573 -4.64313,0.78034 -6.72827,-1.52185 -2.15491,-2.29704 -2.55798,-5.3666 -0.96377,-6.84713 1.62006,-1.45471 4.59921,-0.77515 6.75928,1.52445 2.15491,2.32286 2.57349,5.37435 0.93018,6.84713 m 11.12078,18.49757 c -2.02055,1.40301 -5.32268,0.0878 -7.36131,-2.84221 -2.01798,-2.92745 -2.01798,-6.44146 0.0439,-7.84963 2.04639,-1.40819 5.29684,-0.14213 7.36389,2.76469 2.01538,2.97913 2.01538,6.49314 -0.0491,7.92975 m 18.80247,21.42503 c -1.80609,1.98956 -5.65082,1.4573 -8.46718,-1.2609 -2.87838,-2.65615 -3.68195,-6.42596 -1.87069,-8.41809 1.82676,-1.99472 5.69474,-1.43402 8.53178,1.2609 2.86029,2.65102 3.73362,6.44922 1.80868,8.41809 m 24.29567,7.23471 c -0.79323,2.57866 -4.49843,3.75171 -8.22947,2.65618 -3.72587,-1.12914 -6.165,-4.15221 -5.41311,-6.75928 0.77515,-2.59676 4.49585,-3.81889 8.25531,-2.64584 3.7207,1.12395 6.165,4.12377 5.38985,6.74894 m 27.65465,3.067 c 0.093,2.71817 -3.07217,4.97128 -6.98924,5.02036 -3.94033,0.0853 -7.12618,-2.11357 -7.16752,-4.78523 0,-2.74402 3.09283,-4.97644 7.03058,-5.04105 3.91707,-0.0775 7.12618,2.10582 7.12618,4.80592 m 27.1663,-1.0413 c 0.47025,2.65102 -2.25309,5.37435 -6.14175,6.09783 -3.82405,0.69763 -7.36389,-0.93792 -7.85223,-3.56566 -0.47542,-2.71819 2.2996,-5.43896 6.1159,-6.14434 3.89641,-0.67696 7.38198,0.91726 7.87808,3.61217"
+         id="path4"
+         style="fill:#161614;stroke-width:2.58382" />
+    </g>
+    <text
+       id="text1546"
+       y="97.580269"
+       x="6.0663328"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:64.9944;stroke-width:0.264583"
+       xml:space="preserve"
+       transform="translate(0,-15.766532)"><tspan
+         x="6.0663328"
+         y="97.580269"><tspan>Short description about </tspan></tspan><tspan
+         x="6.0663328"
+         y="103.75388"><tspan>the model. Citations if </tspan></tspan><tspan
+         x="6.0663328"
+         y="109.9275"><tspan>needed.More resources. </tspan></tspan><tspan
+         x="6.0663328"
+         y="116.10111"><tspan
+           style="font-size:4.93889px;fill:#ff0000;stroke-width:0.264583">Grabbed from the model </tspan></tspan><tspan
+         x="6.0663328"
+         y="122.27473"><tspan
+           style="font-size:4.93889px;fill:#ff0000;stroke-width:0.264583">file specified by user.</tspan></tspan></text>
+    <text
+       y="113.61881"
+       x="6.0663328"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:64.9944;stroke-width:0.264583"
+       xml:space="preserve"
+       id="text189"><tspan
+         x="6.0663328"
+         y="113.61881"><tspan
+           style="font-size:4.93889px;fill:#ff0000;stroke-width:0.264583">
+</tspan></tspan><tspan
+         x="6.0663328"
+         y="119.79243"><tspan
+           style="font-size:4.93889px;fill:#ff0000;stroke-width:0.264583">button to parameter file</tspan></tspan></text>
+    <text
+       id="text1565"
+       y="12.053923"
+       x="12.26813"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-size:4.93889px;fill:#ff0000;stroke-width:0.264583"
+         y="12.053923"
+         x="12.26813"
+         id="tspan1563"
+         sodipodi:role="line">collapsable sidebar</tspan></text>
+    <text
+       transform="translate(-3.1984803,-4.0160305)"
+       id="text1569"
+       y="43.318554"
+       x="9.5272198"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:58.0564;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         x="9.5272198"
+         y="43.318554"><tspan
+           style="font-size:4.93889px;stroke-width:0.264583">different options or </tspan></tspan><tspan
+         x="9.5272198"
+         y="49.492166"><tspan
+           style="font-size:4.93889px;stroke-width:0.264583">ways to interact with </tspan></tspan><tspan
+         x="9.5272198"
+         y="55.665781"><tspan
+           style="font-size:4.93889px;stroke-width:0.264583">the model</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:58.0564;stroke-width:0.264583"
+       x="9.5272198"
+       y="43.318554"
+       id="text1569-1"
+       transform="translate(-2.7886009,113.05962)"><tspan
+         x="9.5272198"
+         y="43.318554"><tspan>our info</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:78.5038;stroke-width:0.264583"
+       x="218.60478"
+       y="56.756546"
+       id="text1565-2"><tspan
+         x="218.60478"
+         y="56.756546"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">drop-down menu, should look </tspan></tspan><tspan
+         x="218.60478"
+         y="62.930171"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">for all models in the directory</tspan></tspan></text>
+    <g
+       transform="matrix(0.75922851,0,0,0.75922851,64.337567,10.578531)"
+       id="g1705">
+      <rect
+         style="fill:#4d4d4d;fill-opacity:0.0911765;stroke:none;stroke-width:0.401;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000"
+         id="rect1605"
+         width="55.281513"
+         height="19.898598"
+         x="230.5825"
+         y="32.842743" />
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+         x="234.15414"
+         y="44.961224"
+         id="text1609"><tspan
+           sodipodi:role="line"
+           id="tspan1607"
+           x="234.15414"
+           y="44.961224"
+           style="font-size:6.35px;stroke-width:0.264583">Select Model</tspan></text>
+      <path
+         sodipodi:type="star"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.401;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000"
+         id="path1629"
+         sodipodi:sides="3"
+         sodipodi:cx="178.13481"
+         sodipodi:cy="61.593498"
+         sodipodi:r1="5.6380568"
+         sodipodi:r2="2.8190286"
+         sodipodi:arg1="-0.52359878"
+         sodipodi:arg2="0.52359878"
+         inkscape:flatsided="true"
+         inkscape:rounded="0"
+         inkscape:randomized="0"
+         d="m 183.01751,58.77447 -4.8827,8.457085 -4.8827,-8.457085 z"
+         inkscape:transform-center-x="1.6450611e-06"
+         inkscape:transform-center-y="0.69747539"
+         transform="matrix(0.37973997,0,0,0.49483415,212.01894,12.457512)" />
+    </g>
+    <g
+       transform="translate(2.1387292,-2.3960957)"
+       id="g1709">
+      <rect
+         style="fill:#000000;fill-opacity:0.0441176;stroke:none;stroke-width:0.401;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000"
+         id="rect1631"
+         width="62.927937"
+         height="67.756638"
+         x="148.47731"
+         y="57.252472" />
+      <text
+         transform="translate(144.12978,27.319152)"
+         id="text1569-0"
+         y="43.318554"
+         x="9.5272198"
+         style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:58.0564;stroke-width:0.264583"
+         xml:space="preserve"><tspan
+           x="9.5272198"
+           y="43.318554"><tspan>system diagram, </tspan></tspan><tspan
+           x="9.5272198"
+           y="49.492166"><tspan>provided by the user.
+</tspan></tspan><tspan
+           x="9.5272198"
+           y="55.665781"><tspan
+             style="fill:#ff0000">grabbed from the </tspan></tspan><tspan
+           x="9.5272198"
+           y="61.839395"><tspan
+             style="fill:#ff0000">model directory</tspan></tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:166.046;stroke-width:0.264583"
+       x="9.5272198"
+       y="43.318554"
+       id="text1569-5"
+       transform="translate(93.444313,-16.623733)"><tspan
+         x="9.5272198"
+         y="43.318554"><tspan>short descrpition about the project and its uses. maybe link to </tspan></tspan><tspan
+         x="9.5272198"
+         y="49.492166"><tspan>page with tutorial</tspan></tspan></text>
+    <text
+       id="text1713"
+       y="73.15625"
+       x="83.514618"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-weight:bold;font-size:4.93889px;stroke-width:0.264583"
+         y="73.15625"
+         x="83.514618"
+         id="tspan1711"
+         sodipodi:role="line">Manipulated Variables</tspan></text>
+    <text
+       id="text1565-2-6"
+       y="81.256836"
+       x="87.811974"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:60.3354;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         x="87.811974"
+         y="81.256836"><tspan
+           style="font-size:4.9389px;fill:#000000;stroke-width:0.264583">menu listing all input </tspan></tspan><tspan
+         x="87.811974"
+         y="87.430461"><tspan>variables.</tspan><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583"> allows time </tspan></tspan><tspan
+         x="87.811974"
+         y="93.604083"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">functions as an input </tspan></tspan><tspan
+         x="87.811974"
+         y="99.777705"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">(maybe plot them so </tspan></tspan><tspan
+         x="87.811974"
+         y="105.95133"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">the user can verify). if </tspan></tspan><tspan
+         x="87.811974"
+         y="112.12495"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">no input, use default. </tspan></tspan><tspan
+         x="87.811974"
+         y="118.29857"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">checkbox for control </tspan></tspan><tspan
+         x="87.811974"
+         y="124.47219"><tspan
+           style="font-size:4.9389px;fill:#ff0000;stroke-width:0.264583">subroutine</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:63.2754;stroke-width:0.264583"
+       x="224.73723"
+       y="79.778465"
+       id="text1565-2-6-4"><tspan
+         x="224.73723"
+         y="79.778465"><tspan>list of system outputs. </tspan></tspan><tspan
+         x="224.73723"
+         y="85.95209"><tspan
+           style="fill:#ff0000">user selects which </tspan></tspan><tspan
+         x="224.73723"
+         y="92.125713"><tspan
+           style="fill:#ff0000">variables to keep track of</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="244.32848"
+       y="71.453575"
+       id="text1713-1"><tspan
+         sodipodi:role="line"
+         id="tspan1711-9"
+         x="244.32848"
+         y="71.453575"
+         style="font-weight:bold;font-size:4.9389px;stroke-width:0.264583">Outputs</tspan></text>
+    <rect
+       style="fill:#4d4d4d;fill-opacity:0.0911765;stroke:none;stroke-width:0.304451;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000"
+       id="rect1605-0"
+       width="41.971302"
+       height="15.107583"
+       x="96.638077"
+       y="130.8187" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.8211px;line-height:1.25;font-family:sans-serif;stroke-width:0.200879"
+       x="99.082504"
+       y="140.01941"
+       id="text1609-8"><tspan
+         sodipodi:role="line"
+         id="tspan1607-6"
+         x="99.082504"
+         y="140.01941"
+         style="font-size:4.8211px;stroke-width:0.200879">Run Simulation</tspan></text>
+    <rect
+       y="125.78566"
+       x="241.14084"
+       height="15.107583"
+       width="41.971302"
+       id="rect1605-0-5"
+       style="fill:#4d4d4d;fill-opacity:0.0911765;stroke:none;stroke-width:0.304451;stroke-opacity:0.729412;paint-order:markers stroke fill;stop-color:#000000" />
+    <text
+       id="text1609-8-0"
+       y="131.96257"
+       x="262.16705"
+       style="font-size:4.82111px;line-height:1.25;font-family:sans-serif;stroke-width:0.200879"
+       xml:space="preserve"><tspan
+         style="font-size:4.82111px;text-align:center;text-anchor:middle;stroke-width:0.200879"
+         y="131.96257"
+         x="262.16705"
+         id="tspan1607-6-3"
+         sodipodi:role="line">Simulation</tspan><tspan
+         style="font-size:4.82111px;text-align:center;text-anchor:middle;stroke-width:0.200879"
+         y="137.98895"
+         x="262.16705"
+         sodipodi:role="line"
+         id="tspan348">Settings</tspan></text>
+    <text
+       id="text1565-2-6-4-2"
+       y="151.76669"
+       x="86.892029"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:67.5517;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         x="86.892029"
+         y="151.76669"><tspan
+           style="fill:#ff0000;stroke-width:0.264583">button to start simulation</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:76.0948;stroke-width:0.264583"
+       x="223.93448"
+       y="147.07965"
+       id="text1565-2-6-4-2-7"><tspan
+         x="223.93448"
+         y="147.07965"><tspan
+           style="text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.264583">button to </tspan><tspan
+           style="text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.264583">simulation settings </tspan></tspan><tspan
+         x="223.93448"
+         y="153.25328"><tspan
+           style="text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.264583">file</tspan></tspan></text>
+    <rect
+       style="opacity:0.651613;fill:#d7eef4;stroke:none;stroke-width:0.488;fill-opacity:1"
+       id="rect434"
+       width="174.79424"
+       height="30.735998"
+       x="96.751572"
+       y="171.31978" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:sans-serif;white-space:pre;inline-size:103.759;fill:#000000;stroke-width:0.264583"
+       x="100.55798"
+       y="178.94038"
+       id="text1569-0-8"><tspan
+         x="100.55798"
+         y="178.94038"><tspan
+           style="fill:#000000;stroke-width:0.264583">plot area</tspan><tspan
+           style="fill:#ff0000">make graphs based on selected </tspan></tspan><tspan
+         x="100.55798"
+         y="185.11402"><tspan
+           style="fill:#ff0000">outputs</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="285.71115"
+       y="11.759859"
+       id="text1307"><tspan
+         sodipodi:role="line"
+         id="tspan1305"
+         x="285.71115"
+         y="11.759859"
+         style="stroke-width:0.264583">1</tspan></text>
+  </g>
+</svg>
