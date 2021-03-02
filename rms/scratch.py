@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 path = os.getcwd()[:-4]
-models = glob.glob(os.path.join(path,'models/**/'))
+models = glob.glob(os.path.join(path,'rms/models/**/'))
 
 a = Model(models[0])
 
