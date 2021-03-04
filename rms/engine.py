@@ -5,6 +5,7 @@ import numpy as np
 import os 
 import importlib.util
 import inspect
+from scipy.integrate import odeint
 
 class Model():
 
@@ -123,9 +124,10 @@ class Simulator(Caretaker):
         self.simvars = Vars(os.getcwd(), 'rms/simulator_vars.csv')
         self.model = model
 
-        ti = self.simvars.current.loc['Ti','Value']
-        tf = self.simvars.current.loc['Tf','Value']
-        n = self.simvars.current.loc['n','Value']
+        self.integrator = self.simvars.current.loc['integrator','Value']
+        ti = float(self.simvars.current.loc['Ti','Value'])
+        tf = float(self.simvars.current.loc['Tf','Value'])
+        n = int(self.simvars.current.loc['n','Value'])
         self.dt = (tf-ti)/n
 
         self.simvars.current.loc['dt','Value'] = self.dt
@@ -138,6 +140,7 @@ class Simulator(Caretaker):
 
     def run(self): #TODO: beautify
 
+
         data = [[] for _ in range(len(self.model.get_state_df()))]
 
         for t in self.time:
@@ -147,12 +150,23 @@ class Simulator(Caretaker):
             if self.subroutines: self.subroutines._run_all()
 
             # update state and integrate
-            results = self.simulate(np.array([t,t+self.dt]), self.model.get_all_vars_dict())
+            if self.integrator == 'CVODE':
+                results = self.simulate(np.array([t,t+self.dt]), self.model.get_all_vars_dict())
+                # log data
+                for i,(r,k) in enumerate(zip(results, state.keys())):
+                    state[k] = r.values[-1]
+                    data[i].append(r.values[-1])
+            elif self.integrator == 'scipy':
+                myfun = lambda y,t: self.model.model_class.rhs(self.simulators[None].bioprocess_model,t,y)
+                results = odeint(myfun, t = np.array([t,t+self.dt]), y0 = [value for _, value in state.items()])[-1]
+                # log data
+                for i,(r,k) in enumerate(zip(results.T, state.keys())):
+                    state[k] = r
+                    data[i].append(r)
+            else:
+                raise Exception('Integrator not recognized. Please use "CVODE" or "scipy".')
 
-            # log data
-            for i,(r,k) in enumerate(zip(results, state.keys())):
-                state[k] = r.values[-1]
-                data[i].append(r.values[-1])
+
             self.model.update_mvars_from_dict(state, also_IC = True)
 
         return pd.DataFrame(data).T.set_index(self.time, 'Time')
