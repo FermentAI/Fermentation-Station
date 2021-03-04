@@ -149,14 +149,18 @@ class Simulator(Caretaker):
             # run any subroutine
             if self.subroutines: self.subroutines._run_all()
 
-            # update state and integrate
+            # update, integrate, log
+            self.simulators[None].set_parameters(self.model.get_all_vars_dict())
+
             if self.integrator == 'CVODE':
-                results = self.simulate(np.array([t,t+self.dt]), self.model.get_all_vars_dict())
+                results = self.simulate(np.array([t,t+self.dt]))
                 # log data
                 for i,(r,k) in enumerate(zip(results, state.keys())):
                     state[k] = r.values[-1]
                     data[i].append(r.values[-1])
+
             elif self.integrator == 'scipy':
+
                 myfun = lambda y,t: self.model.model_class.rhs(self.simulators[None].bioprocess_model,t,y)
                 results = odeint(myfun, t = np.array([t,t+self.dt]), y0 = [value for _, value in state.items()])[-1]
                 # log data
