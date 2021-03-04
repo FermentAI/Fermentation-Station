@@ -4,6 +4,6 @@ qc_max,Min Coolant Flowrate,300,L/min
 Tsp,Temperature Set point,390,K
 beta,Proportional Setpoint Weight,0,
 gamma,Derivative Setpoint Weight,0,
-kp,Proportional Gain,0,
-ki,Integral Gain,0,
+kp,Proportional Gain,10,
+ki,Integral Gain,20,
 kd,Derivative Gain,0,

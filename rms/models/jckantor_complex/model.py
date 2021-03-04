@@ -15,7 +15,7 @@ class MyModel(BioprocessModel):
         q = self.model_parameters['q']
         Cf = self.model_parameters['Cf']
         Tf = self.model_parameters['Tf']
-        Tc0 = self.initial_values['Tc0']
+        Tcf = self.model_parameters['Tcf']
         qc = self.model_parameters['qc']
         Vc = self.model_parameters['Vc']
 
@@ -27,13 +27,13 @@ class MyModel(BioprocessModel):
         UA = self.model_parameters['UA']
 
         # Defines the derivatives.
-        dC = (q/V)*(Cf - C) - self.k(T)*C
-        dT = (q/V)*(Tf - T) + (-dHr/rho/Cp)*self.k(T)*C + (UA/V/rho/Cp)*(Tc - T)
-        dTc = (qc/Vc)*(Tc0 - Tc) + (UA/Vc/rho/Cp)*(T - Tc)
+        dCdt = (q/V)*(Cf - C) - self.k(T)*C
+        dTdt = (q/V)*(Tf - T) + (-dHr/rho/Cp)*self.k(T)*C + (UA/V/rho/Cp)*(Tc - T)
+        dTcdt = (qc/Vc)*(Tcf - Tc) + (UA/Vc/rho/Cp)*(T - Tc)
 
         # Returns the derivative as list (or numpy array).
         # The order corresponds to the state vector.
-        return [dC, dT, dTc]
+        return [dCdt, dTdt, dTcdt]
 
     ###############################################
 
@@ -63,7 +63,35 @@ class MySubroutines(Subroutine):
         self._update_error([eP_,eD_,eD_])
 
 
+    def temperature_pid_coolant_flowratea(self):
+        '''
+        Discrete time PID implementation
+        '''
+        dt = self.simulator_vars['dt']
+        
+        kp = self.subroutine_vars['kp']
+        ki = self.subroutine_vars['ki']
+        kd = self.subroutine_vars['kd']
+        new_qc = self.model_parameters['qc']
 
+        # calculate current error
+        eP, eI, eD = self._temperature_error() 
+
+        # calculate manipulated varibale based on error
+        new_qc -= kp*(eP - self.eP_) + ki*dt*eI + kd*(eD - 2*self.eD_ + self.eD__)/dt
+
+        # check for saturation
+        new_qc = self._coolant_flowrate_saturation(new_qc)
+
+        # update manipulated variable
+        self.model_parameters['qc'] = new_qc
+        self.qLog.append(new_qc)
+
+        # update errors
+        self._update_error([eP,eD,self.eD_]) 
+        return True
+
+    # other helper functions for Temperature PID
     def _update_error(self, new_error):
         self.eP_ = new_error[0]  
         self.eD_ = new_error[1] 
@@ -94,33 +122,4 @@ class MySubroutines(Subroutine):
         qc_max = self.subroutine_vars['qc_max']
 
         return max(qc_min, min(qc_max,qc))
-
-
-    def temperature_pid_coolant_flowratea(self):
-        '''
-        Discrete time PID implementation
-        '''
-        dt = self.simulator_vars['dt']
-        
-        kp = self.subroutine_vars['kp']
-        ki = self.subroutine_vars['ki']
-        kd = self.subroutine_vars['kd']
-        new_qc = self.model_parameters['qc']
-
-        # calculate current error
-        eP, eI, eD = self._temperature_error() 
-
-        # calculate manipulated varibale based on error
-        new_qc -= kp*(eP - self.eP_) + ki*dt*eI + kd*(eD - 2*self.eD_ + self.eD__)/dt
-
-        # check for saturation
-        new_qc = self._coolant_flowrate_saturation(new_qc)
-
-        # update manipulated variable
-        self.model_parameters['qc'] = new_qc
-        self.qLog.append(new_qc)
-
-        # update errors
-        self._update_error([eP,eD,self.eD_]) 
-        return True
  

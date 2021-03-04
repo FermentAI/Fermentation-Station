@@ -1,5 +1,5 @@
 
-from pyfoomb import BioprocessModel, Caretaker
+from pyfoomb import Caretaker
 import pandas as pd
 import numpy as np
 import os 
@@ -23,7 +23,7 @@ class Model():
 
         # add rows to keep track of state
         self.state = self.mvars.current[self.mvars.current.State].copy(True)
-        self.mvars.current.drop(self.mvars.current[self.mvars.current.State == True].index, inplace = True)
+        self.mvars.current.State = False
         self.state.index = self.state.index.map(lambda x: str(x)[:-1])
         self.state.Label = self.state.Label.map(lambda x: str(x)[8:])
         self.mvars.current = self.mvars.current.append(self.state)
@@ -57,6 +57,9 @@ class Model():
     def get_all_vars_dict(self):
         return {**self.params.current.Value, **self.mvars.current[~self.mvars.current.State].Value}
 
+    def get_vars_dict(self):
+        return {**self.params.current.Value, **self.mvars.current.Value}
+
     def get_state_dict(self):
         return {**self.mvars.current[self.mvars.current.State].Value}
 
@@ -67,10 +70,17 @@ class Model():
         self.state.update(state)
         return
 
-    def update_mvars_from_dict(self, new_mvars_dict):
-        new_mvars_df = pd.DataFrame.from_dict(new_mvars_dict, orient = 'index', columns = ['Value'])
-        new_mvars_df.index.name = 'Var'
-        self.mvars.current.update(new_mvars_df)
+    def update_mvars_from_dict(self, new_mvars_dict, also_IC = False):
+        def _update(new_mvars_dict):
+            new_mvars_df = pd.DataFrame.from_dict(new_mvars_dict, orient = 'index', columns = ['Value'])
+            new_mvars_df.index.name = 'Var'
+            self.mvars.current.update(new_mvars_df)
+
+        _update(new_mvars_dict)
+        if also_IC:
+            new_mvars_dict = {key+'0': value for key, value in new_mvars_dict.items()}
+            _update(new_mvars_dict)
+
 
 
 class Vars():
@@ -105,12 +115,12 @@ class Simulator(Caretaker):
     def __init__(self, model,**kwds):
         super().__init__(
                 bioprocess_model_class = model.model_class,
-                model_parameters = model.get_all_vars_dict(),
+                model_parameters = model.get_vars_dict(),
                 initial_values = model.initial_values_dict,
                 **kwds)
 
         
-        self.simvars = Vars(os.getcwd(), 'simulator_vars.csv')
+        self.simvars = Vars(os.getcwd(), 'rms/simulator_vars.csv')
         self.model = model
 
         ti = self.simvars.current.loc['Ti','Value']
@@ -132,20 +142,18 @@ class Simulator(Caretaker):
 
         for t in self.time:
             state = self.model.get_state_dict()
-
+            
             # run any subroutine
             if self.subroutines: self.subroutines._run_all()
-            
-            # update state
-            self.simulators[None]._initial_values = {key+'0': value for key, value in state.items()}
+
+            # update state and integrate
             results = self.simulate(np.array([t,t+self.dt]), self.model.get_all_vars_dict())
 
             # log data
             for i,(r,k) in enumerate(zip(results, state.keys())):
                 state[k] = r.values[-1]
                 data[i].append(r.values[-1])
-
-            self.model.update_mvars_from_dict(state)
+            self.model.update_mvars_from_dict(state, also_IC = True)
 
         return pd.DataFrame(data).T.set_index(self.time, 'Time')
 
@@ -158,7 +166,7 @@ class Subroutine():
         self.model = model
         self.subrvars = Vars(model.model_path, 'subroutine_vars.csv')
         self.subroutine_vars = self.subrvars.get_vars_dict()
-        self.model_parameters = model.get_all_vars_dict()
+        self.model_parameters = model.get_vars_dict()
         self.model_state = model.get_state_dict()
         self.simulator_vars = simulator.simvars.get_vars_dict()
 
@@ -169,7 +177,7 @@ class Subroutine():
         pass
     
     def _run_all(self):
-        self.model_parameters = self.model.get_all_vars_dict()
+        self.model_parameters = self.model.get_vars_dict()
         self.model_state = self.model.get_state_dict()
 
         all_methods = (getattr(self, name) for name in dir(self))
