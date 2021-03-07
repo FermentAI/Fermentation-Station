@@ -21,14 +21,18 @@ class Model():
         self.initial_values_dict = self.get_state_dict()
         self.model_class = self.get_model()
         self.subroutine_class = self.get_subroutine()
+        self.reset()
 
+    def reset(self):
+        # back to default
+        self.mvars.current = self.mvars.default.copy(True)
         # add rows to keep track of state
         self.state = self.mvars.current[self.mvars.current.State].copy(True)
         self.mvars.current.State = False
         self.state.index = self.state.index.map(lambda x: str(x)[:-1])
         self.state.Label = self.state.Label.map(lambda x: str(x)[8:])
         self.mvars.current = self.mvars.current.append(self.state)
-        self.state = self.get_state_df()
+        self.state = self.get_state_dict()
 
 
     def __import_module(self):
@@ -36,12 +40,6 @@ class Model():
         model = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(model)
         return model
-
-    def get_params_df(self):
-        return self.params.current
-
-    def get_mvars_df(self):
-        return self.mvars.current
 
     def get_model(self):
         try:
@@ -55,21 +53,24 @@ class Model():
         except AttributeError:
             return None
 
-    def get_all_vars_dict(self):
-        return {**self.params.current.Value, **self.mvars.current[~self.mvars.current.State].Value}
+    def __eval_time(self, t):
+        funs = self.mvars.default.Value.apply(callable)
+        if funs.any():
+            for i in self.mvars.default[funs].index:
+                self.mvars.current.loc[i,'Value'] = self.mvars.default.loc[i,'Value'](t)
 
-    def get_vars_dict(self):
-        return {**self.params.current.Value, **self.mvars.current.Value}
+    def get_vars_dict(self, t = 0):
+        self.__eval_time(t)
+        return {**self.params.get_all_vars_dict(), **self.mvars.current[~self.mvars.current.State].Value}
 
-    def get_state_dict(self):
-        return {**self.mvars.current[self.mvars.current.State].Value}
+    def get_all_vars_dict(self, t = 0):
+        self.__eval_time(t)
+        return {**self.params.get_all_vars_dict(), **self.mvars.get_all_vars_dict()}
 
-    def get_state_df(self):
-        return self.mvars.current[self.mvars.current.State]
-
-    def set_state_df(self, state): #unused rn
-        self.state.update(state)
-        return
+    def get_state_dict(self, t = 0):
+        self.__eval_time(t)
+        self.state = {**self.mvars.current[self.mvars.current.State].Value}
+        return self.state
 
     def update_mvars_from_dict(self, new_mvars_dict, also_IC = False):
         def _update(new_mvars_dict):
@@ -101,7 +102,7 @@ class Vars():
     def read_vars(self):
         return pd.read_csv(os.path.join(self.path, self.var_file)).set_index('Var').fillna(False).sort_index()
 
-    def get_vars_dict(self):
+    def get_all_vars_dict(self):
         return {**self.current.Value}
 
 class Simulator(Caretaker):
@@ -116,7 +117,7 @@ class Simulator(Caretaker):
     def __init__(self, model,**kwds):
         super().__init__(
                 bioprocess_model_class = model.model_class,
-                model_parameters = model.get_vars_dict(),
+                model_parameters = model.get_all_vars_dict(),
                 initial_values = model.initial_values_dict,
                 **kwds)
 
@@ -141,16 +142,16 @@ class Simulator(Caretaker):
     def run(self): #TODO: beautify
 
 
-        data = [[] for _ in range(len(self.model.get_state_df()))]
+        data = [[] for _ in range(len(self.model.get_state_dict()))]
 
         for t in self.time:
             state = self.model.get_state_dict()
             
             # run any subroutine
-            if self.subroutines: self.subroutines._run_all()
+            if self.subroutines: self.subroutines._run_all(t)
 
             # update, integrate, log
-            self.simulators[None].set_parameters(self.model.get_all_vars_dict())
+            self.simulators[None].set_parameters(self.model.get_vars_dict(t))
 
             if self.integrator == 'CVODE':
                 results = self.simulate(np.array([t,t+self.dt]))
@@ -183,10 +184,10 @@ class Subroutine():
     def __init__(self, model, simulator):
         self.model = model
         self.subrvars = Vars(model.model_path, 'subroutine_vars.csv')
-        self.subroutine_vars = self.subrvars.get_vars_dict()
-        self.model_parameters = model.get_vars_dict()
+        self.subroutine_vars = self.subrvars.get_all_vars_dict()
+        self.model_parameters = model.get_all_vars_dict()
         self.model_state = model.get_state_dict()
-        self.simulator_vars = simulator.simvars.get_vars_dict()
+        self.simulator_vars = simulator.simvars.get_all_vars_dict()
 
         self._initialization()
 
@@ -194,9 +195,9 @@ class Subroutine():
         'This method should be overwritten by user'
         pass
     
-    def _run_all(self):
-        self.model_parameters = self.model.get_vars_dict()
-        self.model_state = self.model.get_state_dict()
+    def _run_all(self,t):
+        self.model_parameters = self.model.get_all_vars_dict(t)
+        self.model_state = self.model.get_state_dict(t)
 
         all_methods = (getattr(self, name) for name in dir(self))
         self.exe_methods = filter(lambda x: not x.__name__.startswith('_') ,filter(inspect.ismethod,all_methods))

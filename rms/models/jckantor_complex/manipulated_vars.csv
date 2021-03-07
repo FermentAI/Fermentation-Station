@@ -1,10 +1,10 @@
-﻿Var,Label,Value,Units,State
-q,Flowrate,100,L/min,
-Cf,Inlet Feed Concentration,1,mol/L,
-Tf,Inlet Feed Temperature,300,K,
-C0,Initial Concentration,0.5,mol/L,TRUE
-T0,Initial Temperature,350,K,TRUE
-Tc0,Initial Cooling Jacket Temperature,300,K,TRUE
-Tcf,Coolant Feed Temperature,300,K
-qc,Nominal Coolant Flowerate,150,L/min,
-Vc,Cooling Jacket Volume,20,L,
+﻿Var,Label,Value,Units,State,Min,Max,InputType
+q,Flowrate,100,L/min,,0,300,slider
+Cf,Inlet Feed Concentration,1,mol/L,,3,,
+Tf,Inlet Feed Temperature,300,K,,,,
+C0,Initial Concentration,0.5,mol/L,TRUE,,,
+T0,Initial Reactor Temperature,350,K,TRUE,,,
+Tc0,Initial Cooling Jacket Temperature,300,K,TRUE,,,
+Tcf,Coolant Feed Temperature,300,K,,,,
+qc,Nominal Coolant Flowerate,150,L/min,,,,
+Vc,Cooling Jacket Volume,20,L,,,,

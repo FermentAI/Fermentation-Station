@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 from dash_apps.apps.myapp import app
 from dash_apps.apps import app1, app2
 import dash_apps.shared_callbacks
-from dash_apps.shared_components import *
+from dash_apps.shared_components import navbar, sidebar, sidebar_btn
 
 # visit http://127.0.0.1:8050/ in your web browser.
 
@@ -16,7 +16,6 @@ app.layout = html.Div([
     sidebar_btn,
     html.Div(id='page')
 ])
-
 
 @app.callback(Output('page', 'children'),
               Input('url', 'pathname'))

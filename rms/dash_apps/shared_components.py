@@ -23,6 +23,7 @@ navbar = dbc.NavbarSimple(
     color="dark",
     dark=True,
     fluid=True,
+    sticky='top'
 )
 
 sidebar = html.Div(
@@ -47,3 +48,55 @@ sidebar = html.Div(
 )
 
 sidebar_btn = dbc.Button(children = "<", outline=True, size = "sm", color="secondary", n_clicks =0, className="mr-1", id="btn_sidebar", style = SIDEBAR_BTN_STYLE)
+
+def NamedSlider(name, **kwargs):
+    other = kwargs.pop('other')
+    return html.Div(
+        children=[
+            dbc.FormGroup(
+            [
+                dbc.Label(f"{name}\n ({other['units']})", width=8),
+                dbc.Col(
+                    dbc.Input(id=kwargs['id']+'-input', type="number", placeholder = kwargs['value']),
+                    width=4,
+                ),
+            ],
+            row=True,
+        ),
+        dcc.Slider(**kwargs),
+        ],
+    )
+
+
+def generate_table(dataframe, max_rows=20):
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(col) for col in dataframe.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+            ]) for i in range(min(len(dataframe), max_rows))
+        ])
+    ])
+
+'''
+from sympy import var, stats
+from sympy import sympify
+from sympy.utilities.lambdify import lambdify
+
+t = var('t')
+tv = np.arange(0,100)
+
+text = st.text_input('Define Variable','u=f(t)')
+# sanitize input
+u = lambdify(t, sympify(text))
+text = st.text_input('Add Disturbances','d=f(t)')
+d = lambdify(t, sympify(text))
+
+df = pd.DataFrame({
+'time (hr)': tv,
+selected_f: u(tv)+d(tv)
+})
+
+'''

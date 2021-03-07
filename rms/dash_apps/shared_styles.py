@@ -5,11 +5,10 @@ SIDEBAR_STYLE = {
     "left": 0,
     "bottom": 0,
     "width": "16rem",
-    "height": "100%",
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
-    "padding": "0.5rem 1rem",
+    "padding": "1rem 1rem",
     "background-color": "#f8f9fa",
 }
 
@@ -19,7 +18,6 @@ SIDEBAR_HIDEN = {
     "left": "-16rem",
     "bottom": 0,
     "width": "16rem",
-    "height": "100%",
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
@@ -29,9 +27,9 @@ SIDEBAR_HIDEN = {
 
 SIDEBAR_BTN_STYLE = {
     "position": "fixed",
-    "top": 890,
+    "top": "77rem",
     "left": "13rem",
-    "bottom": 18,
+    "bottom": "2rem",
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
@@ -39,9 +37,9 @@ SIDEBAR_BTN_STYLE = {
 
 SIDEBAR_BTN_HIDEN = {
     "position": "fixed",
-    "top": 890,
+    "top": "77rem",
     "left": "1rem",
-    "bottom": 18,
+    "bottom": "2rem",
     "z-index": 1,
     "overflow-x": "hidden",
     "transition": "all 0.5s",
@@ -52,15 +50,15 @@ SIDEBAR_BTN_HIDEN = {
 CONTENT_STYLE = {
     "transition": "margin-left .5s",
     "margin-left": "18rem",
-    "margin-right": "2rem",
+    "margin-right": "5rem",
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
 }
 
 CONTENT_STYLE1 = {
     "transition": "margin-left .5s",
-    "margin-left": "2rem",
-    "margin-right": "2rem",
+    "margin-left": "5rem",
+    "margin-right": "5rem",
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
 }
