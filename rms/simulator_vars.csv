@@ -1,0 +1,5 @@
+﻿Var,Label,Value
+Ti,initial time,0
+Tf,final time,8
+n,number of steps,160
+integrator,Integrator,scipy

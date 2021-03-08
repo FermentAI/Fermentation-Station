@@ -1,4 +1,7 @@
 # Reactor Modeling Sandbox
+[![Build Status](https://www.travis-ci.com/FermentAI/Reactor-Modeling-Sandbox.svg?branch=main)](https://www.travis-ci.com/github/FermentAI/Reactor-Modeling-Sandbox)
+[![Coverage Status](https://coveralls.io/repos/github/FermentAI/Reactor-Modeling-Sandbox/badge.svg)](https://coveralls.io/github/FermentAI/Reactor-Modeling-Sandbox)
+
 Here's an interactive tool to see how chemical reaction processes looks on a large scale. You can make predictions reactor outputs based on online measurements.
 Check to see if your system's environment controls are working and test the efficiency of your machine.
 \
