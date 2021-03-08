@@ -13,7 +13,7 @@ import plotly.express as px
 
 
 path = os.getcwd()
-d = 'rms\\models'
+d = 'rms\models'
 models = [os.path.join(path, d, o) for o in os.listdir(d) if os.path.isdir(os.path.join(d,o))]
 sim = Simulator(model = Model(models[0]))
 
