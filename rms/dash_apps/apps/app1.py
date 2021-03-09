@@ -13,8 +13,7 @@ import plotly.express as px
 
 
 path = os.getcwd()
-d = 'models'
-models = [os.path.join(path, d, o) for o in os.listdir(d) if os.path.isdir(os.path.join(d,o))]
+models = [os.path.join(path, 'rms','models', o) for o in os.listdir(os.path.join('rms','models')) if os.path.isdir(os.path.join('rms','models',o))]
 sim = Simulator(model = Model(models[0]))
 
 lol = sim.model.mvars.default
