@@ -2,9 +2,12 @@ from engine import Subroutine
 from pyfoomb import BioprocessModel
 import numpy as np
 
-# Defines the model class
 class MyModel(BioprocessModel):
-
+    """
+    Defines the model class. Always named MyModel. Always inherits from BioprocessModel
+    
+    Must define rhs(self,t,y) as a system of ODEs.
+    """
     def rhs(self, t, y):
         # Unpacks the state vector. The states are alphabetically ordered.
         C,T,Tc = y
@@ -36,7 +39,9 @@ class MyModel(BioprocessModel):
         return [dCdt, dTdt, dTcdt]
 
     ###############################################
-
+    """
+    Other methods can also be defined
+    """
     # Arrhenius rate expression
     def k(self,T):
         Ea = self.model_parameters['Ea']
@@ -47,9 +52,11 @@ class MyModel(BioprocessModel):
 
 
 class MySubroutines(Subroutine):
-    '''
-    The Subroutine class runs all its NOT underscored functions before iterating at every time step
-    '''
+    """
+    Defines the subroutine class. Always named MySubroutines. Always inherits from Subroutine.
+
+    The Subroutine class runs all its NOT underscored functions before iterating at every time step.
+    """
     def _initialization(self):
         '''
         This will only be run once in the first integration iteration.
