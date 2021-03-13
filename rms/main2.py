@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 from dash_apps.apps.myapp import app
-from dash_apps.apps import app3, app4
+from dash_apps.apps import app4, app2
 import dash_apps.shared_callbacks
 from dash_apps.shared_components import navbar, sidebar, sidebar_btn
 
@@ -20,10 +20,10 @@ app.layout = html.Div([
 @app.callback(Output('page', 'children'),
               Input('url', 'pathname'))
 def display_page(pathname):
-    if pathname == '/app3':
-        return app3.layout
-    elif pathname == '/app4':
-         return app4.layout
+    if pathname == '/':
+        return app4.layout
+    elif pathname == '/app2':
+         return app2.layout
     else:
         return dbc.Jumbotron(
         [

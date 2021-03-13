@@ -123,6 +123,7 @@ class Simulator(Caretaker):
 
         
         self.simvars = Vars(os.getcwd(), 'rms/simulator_vars.csv')
+
         self.model = model
 
         self.integrator = self.simvars.current.loc['integrator','Value']

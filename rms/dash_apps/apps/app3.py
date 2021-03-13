@@ -180,7 +180,7 @@ app.layout = html.Div(
                                 {'label': 'Complex', 'value': 'complex'},
                                 {'label': 'Simple', 'value': 'simple'}
                             ],
-                            value='active',
+                            value='simple',
                             labelStyle={'display': 'inline-block'},
                             className="dcc_control"
                         ),
@@ -280,7 +280,10 @@ app.layout = html.Div(
     }
 )
 
-@app.callback(
+
+
+
+'''@app.callback(
     Output('dummy-output', 'children'),
     [Input('slider-'+var, 'value') for var in lol.index])
 
@@ -300,7 +303,7 @@ def update_figure(n_clicks):
     table = generate_table(sim.model.mvars.current)
     fig = px.scatter(data)
     sim.model.reset()
-    return fig, table
+    return fig, table'''
 
 
 # this callback uses the current pathname to set the active state of the
