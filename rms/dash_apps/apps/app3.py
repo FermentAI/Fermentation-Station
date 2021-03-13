@@ -14,7 +14,6 @@ import plotly.express as px
 
 path = os.getcwd()
 models = [os.path.join(path,'rms','models', o) for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))]
-print(models,type(models[0]))
 
 sim = Simulator(model = Model(models[0]))
 
@@ -55,7 +54,7 @@ sim_plot = dcc.Graph(id = 'sim_plot')
 #)
 
 # Create app layout
-app.layout = html.Div(
+layout = html.Div(
     [
         dcc.Store(id='aggregate_data'),
         html.Div(
@@ -95,7 +94,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='C0',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -104,7 +103,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='Cf',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -113,7 +112,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='T0',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -122,7 +121,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='Tc0',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -131,7 +130,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='Tcf',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -140,7 +139,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='Tf',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -149,7 +148,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='Vc',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -158,7 +157,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='q',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -167,7 +166,7 @@ app.layout = html.Div(
                         ),
                         dcc.Input(id='qc',
                             value='',
-                            type='number'
+                            type='number',
                             className="dcc_control"
                         ),
                         html.P(
@@ -218,7 +217,7 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             [
-                                                html.P("Final Cooling Jacket Temperature")
+                                                html.P("Final Cooling Jacket Temperature"),
                                                 html.H6(
                                                     id="CJT_text",
                                                     className="info_text"
@@ -244,19 +243,19 @@ app.layout = html.Div(
                             className="pretty_container"
                         )
                     ],
-                    id="rightCol"
+                    id="rightCol",
                     className="eight columns"
                 )
             ],
             className="row"
         ),
-        html.Dive(
+        html.Div(
             [
                 html.Div(
                     [
                         dcc.Graph(id='individual_graph')
                     ],
-                    className="pretty_container four columns',
+                    className='pretty_container four columns',
                 ),
             ],
             className='row'
