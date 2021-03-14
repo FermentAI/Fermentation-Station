@@ -22,8 +22,6 @@ class Vars():
     Receives model info and listens for changes in Dash.
     Keeps track of both defualt and current variable values.
     """
-    REQUIRED = ['parameters.csv','manipulated_vars.csv','simulator_vars.csv', 'controlled_vars.csv']
-
     def __init__(self, path, var_file):
         """
         Arguments
@@ -37,7 +35,8 @@ class Vars():
         self.var_file = var_file
         self.default = self.read_vars()
         self.current = self.default
-    
+        self.REQUIRED = ['parameters.csv','manipulated_vars.csv','simulator_vars.csv', 'controlled_vars.csv']
+
     def _update(self, pd:pd.DataFrame):
         """
         Updates current variable values with values from passed DataFrame, based on index
@@ -62,7 +61,7 @@ class Vars():
         try:
             return pd.read_csv(os.path.join(self.path, self.var_file)).set_index('Var').fillna(False).sort_index()
         except:
-            if self.var_file in REQUIRED:
+            if self.var_file in self.REQUIRED:
                 raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), os.path.join(self.path, self.var_file))
             else:
                 return None
