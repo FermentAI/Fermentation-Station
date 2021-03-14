@@ -5,12 +5,14 @@ from dash.dependencies import Input, Output, State
 from dash_apps.shared_components import *
 from dash_apps.apps.myapp import app
 import dash
+import numpy as np
 from dash.dependencies import Input, Output, State, MATCH, ALL
 
 from engine import Model, Simulator
 import os
 import plotly.express as px
 
+#for column names data[]
 
 path = os.getcwd()
 # get all models in the models directory, skip penicilin
@@ -72,27 +74,30 @@ mysim, myvars = sim(model_names[0])
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
 
 # make a plot for output 
-sim_plot = dcc.Graph(id = 'sim_plot4')
+#sim_plot = dcc.Graph(id = 'sim_plot4')
 
+# initiates the app
 app = dash.Dash(__name__)
 
 # layout all the components to be displayed
 content = html.Div(
     [
         dbc.Row([
-            dbc.Col(
+            dbc.Col([
                 dbc.DropdownMenu(
                     label = "Select a model",
                     children = dropdown_models(0),
                     right=False,
                     id = 'dd_models'
                 ),
+                html.Button('Add Chart', id='add-chart',n_clicks=0
+                )],
             )
         ]),
         dbc.Row(),
         dbc.Row([
             dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
-            dbc.Col(sim_plot, width = 9)
+            dbc.Col(id = 'container', children = [])
         ]),
         dbc.Row(run_btn),
         dbc.Row(id = 'mvars4')
@@ -101,79 +106,23 @@ content = html.Div(
     style = CONTENT_STYLE
 )
 
-app.layout = html.Div([
-    content,
-    html.Div(id='dummy-output4'),
-    html.Div(children=[
-        html.Button('Add Chart', id='add-chart',n_clicks=0),
-    ]),
-    html.Div(id='container', children=[])
-])
-
-@app.callback(
-    Output('container','children'),
-    [Input('add-chart','n_clicks')],
-    [State('container','children')]
+#Layout includes a button simulate, a button to add charts, and an empty list to add graphs.
+layout = html.Div(
+    [
+        content,
+    ],
 )
-
-def display_graphs(n_click, div_children):
-    new_child = html.Div(
-#        style={'width'='4','display':'inline-block','outline':'thin lightgrey solid'},
-        children=[
-            dcc.Graph(
-                id={
-                    'type':'dynamic-graph',
-                    'index':n_clicks
-                },
-                figure={}
-            ),
-            dcc.RadioItems(
-                id={'type':'dynamic-choice',
-                    'index':n_clicks
-                },
-                options=[{'label':'Bar Chart', 'value': 'bar'},
-                         {'label': 'Line Chart', 'value': 'line'},
-                         {'label': 'Pie Chart', 'value':'pie'}],
-                value='line',
-            ),
-            dcc.Dropdown(
-                id={
-                    'type': 'dynamic-dpn-var1',
-                    'index': n_clicks
-                },
-                options=[{'label': var, 'value': var} for var in np.sort(data.iloc[0]).unique()],
-                multi=True,
-                value=["1","2"],
-                clearable=False
-            ),
-            dcc.Dropdown(
-                id={
-                    'type': 'dynamic-dpn-var2',
-                    'index': n_clicks
-                },
-                options=[{'label': var, 'value': var} for var in np.sort(data.iloc[0]).unique()],
-                multi=True,
-                value=["2","1"],
-                clearable=False
-            )
-        ]
-    )
-    div_children.append(new_child)
-    return div_children
+#    html.Div(id='dummy-output4'),
+#    html.Div(children=[
+#        html.Button('Add Chart', id='add-chart',n_clicks=0),
+#    ]),
+#    html.Div(id='container', children=[])   
 
 # callback to update the simulator with the selected model
 @app.callback(
     [Output("dd_models", "children"),
     Output("sliders", "children")],
     [Input(m, "n_clicks") for m in model_names],
-)
-
-# callback to update the graphs with the selected variables and graph types
-@app.callback(
-    Output({'type': 'dynamic-graph', 'index':MATCH}, 'figure'),
-    [Input(component_id={'type': 'dynamic-dpn-var1', 'index': MATCH}, component_property='value'),
-     Input(component_id={'type': 'dynamic-dpn-var2', 'index': MATCH}, component_property='value'),
-     Input(component_id={'type': 'dynamic-choice', 'index': MATCH}, component_property='value')]
 )
 
 def update_label(*args):
@@ -217,21 +166,88 @@ def update_mvars_slider(*args):
 # callback to run the simulator and display data when the button is clicked
 @app.callback(
     [
-        Output('sim_plot4', 'figure'),
+#        Output('sim_plot4', 'figure'),
         Output('mvars4','children')
     ],
     Input('btn_run', 'n_clicks'))
 
 def update_figure(n_clicks):
+    global data
     data = mysim.run()
-    table = generate_table(mysim.model.mvars.current)
-    fig = px.scatter(data)
+#    table = generate_table(mysim.model.mvars.current)
+#    fig = px.scatter(data)
     mysim.model.reset()
-    return fig, table
+    return
+#    return fig, table
 
+        
+# Takes the n-clicks of the add-chart button and the state of the container children.
+@app.callback(
+    Output('container','children'),
+    [Input('add-chart','n_clicks')],
+    [State('container','children')]
+)
+
+#This function is triggered when the add-chart clicks changes. This function is not triggered by changes in the state of the container. If children changes, state saves the change in the callback.
+def display_graphs(n_click, div_children):
+    new_child = html.Div(
+#        style={'width'='4','display':'inline-block','outline':'thin lightgrey solid'},
+        children=[
+            dcc.Graph(
+                id={
+                    'type':'dynamic-graph',
+                    'index':n_clicks
+                },
+                figure={}
+            ),
+            dcc.RadioItems(
+                id={'type':'dynamic-choice',
+                    'index':n_clicks
+                },
+                options=[{'label':'Bar Chart', 'value': 'bar'},
+                         {'label': 'Line Chart', 'value': 'line'},
+                         {'label': 'Pie Chart', 'value':'pie'}],
+                value='line',
+            ),
+            dcc.Dropdown(
+                id={
+                    'type': 'dynamic-dpn-var1',
+                    'index': n_clicks
+                },
+                options=[{'label': var, 'value': var} for var in data.columsn.values.tolist()],
+                multi=True,
+                value=["T","C"],
+                clearable=False
+            ),
+            dcc.Dropdown(
+                id={
+                    'type': 'dynamic-dpn-var2',
+                    'index': n_clicks
+                },
+                options=[{'label': var, 'value': var} for var in data.columsn.values.tolist()],
+                multi=True,
+                value=["C","T"],
+                clearable=False
+            )
+        ]
+    )
+    div_children.append(new_child)
+    return div_children
+
+
+
+# callback to update the graphs with the selected variables and graph types
+@app.callback(
+    Output({'type': 'dynamic-graph', 'index':MATCH}, 'figure'),
+    [Input(component_id={'type': 'dynamic-dpn-var1', 'index': MATCH}, component_property='value'),
+     Input(component_id={'type': 'dynamic-dpn-var2', 'index': MATCH}, component_property='value'),
+     Input(component_id={'type': 'dynamic-choice', 'index': MATCH}, component_property='value')]
+)
+
+# 
 def update_graph(var_1, var_2, chart_type):
     print(var_1)
-    new_df = data.loc[data.iloc[0].isin(var_1)]
+    new_df = data[data[0].isin(var_1)]
     if chart_type == 'bar':
         new_df = new_df.groupby([var_2], as_index=False)[data.iloc[0]],
         fig = px.bar(new_df, x = var_2, y=var_1, color=var_2)
@@ -241,7 +257,7 @@ def update_graph(var_1, var_2, chart_type):
             return {}
         else:
             new_df = new_df.groupby([var_1, 'Time'], as_index=False)[data.iloc[0]]
-            fig = px.lin(new_df, x='Time', y=var_1, color=var_2)
+            fig = px.lin(new_df, x=data.index, y=var_1, color=var_2)
             return fig
     elif chart_type == 'pie':
         fig = px.pie(new_df, names=var_2, values=var_1)
@@ -315,5 +331,5 @@ def update_figure(n_clicks):
     table = generate_table(mysim.model.mvars.current)
     fig = px.scatter(data)
     mysim.model.reset()
-    return fig, table
+    return fig, table, data
 '''
