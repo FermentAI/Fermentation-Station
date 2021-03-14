@@ -13,29 +13,69 @@ import plotly.express as px
 
 
 path = os.getcwd()
-model_names = [o for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))][:-1]
+# get all models in the models directory, skip penicilin
+model_names = [o for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))]
+model_names.remove('penicillin_goldrick_2017')
 model_path = lambda model_name: os.path.join(path,'rms','models', model_name) 
 
-sim = lambda model_name: Simulator(model = Model(model_path(model_name)))
-mvars = lambda vars_df: [NamedSlider(
-                        name= vars_df.loc[var,'Label'],
-                        id="slider-"+var,
-                        min=0,
-                        max=500,
-                        step=100,
-                        value = vars_df.loc[var,'Value'],
-                        other = {'units':vars_df.loc[var,'Units']}
-                        )
-                        for var in vars_df.index]
-
-mysim = sim(model_names[0])
-myvars = mysim.model.mvars.default
-
+# make a Dropdown Menu to select a models
 dropdown_models = lambda pick: [dbc.DropdownMenuItem(m, id = m, active = True) if i is pick else dbc.DropdownMenuItem(m, id = m,  active = False) for i,m in enumerate(model_names)]
+
+def sim(model_name):
+    """
+    Generates simulator object based on model name
+
+    Arguments
+    ---------
+        model_name
+    """ 
+    simuluator = Simulator(model = Model(model_path(model_name)))
+    variables = simuluator.model.mvars.default
+    return simuluator, variables
+
+def mvars(vars_df):
+    """
+    Generates sliders based on the variables in a DataFrame
+
+    Arguments
+    ---------
+        vars_df: Pandas DataFrame containing variables
+    """ 
+    sliders = []
+    for var in vars_df.index:
+        if vars_df.loc[var,'Min'] is not None:
+            minval = vars_df.loc[var,'Min']
+        else:
+            minval = vars_df.loc[var,'Value']*0.1
+
+        if vars_df.loc[var,'Max'] is not None:
+            maxval = vars_df.loc[var,'Max']
+        else:
+            maxval = vars_df.loc[var,'Value']*1.9
+
+        slider = NamedSlider(
+                    name= vars_df.loc[var,'Label'],
+                    id="slider-"+var,
+                    min=minval,
+                    max=maxval,
+                    step=(maxval-minval)/100,
+                    value = vars_df.loc[var,'Value'],
+                    other = {'units':vars_df.loc[var,'Units']}
+                )
+        sliders.append(slider)
+    return sliders
+
+# default to the first model 
+mysim, myvars = sim(model_names[0])
+
+# make a button to run the simulator
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
+
+# make a plot for output 
 sim_plot = dcc.Graph(id = 'sim_plot4')
 
 
+# layout all the components to be displayed
 content = html.Div(
     [
         dbc.Row([
@@ -48,7 +88,7 @@ content = html.Div(
                 ),
             )
         ]),
-        dbc.Row(dbc.Label("Alo, This is a row", width=2)),
+        dbc.Row(),
         dbc.Row([
             dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
             dbc.Col(sim_plot, width = 9)
@@ -67,6 +107,8 @@ layout = html.Div(
     ],
 )
 
+
+# callback to update the simulator with the selected model
 @app.callback(
     [Output("dd_models", "children"),
     Output("sliders", "children")],
@@ -82,10 +124,11 @@ def update_label(*args):
         new_pick = 0
         
     global mysim, myvars
-    mysim = mysim = sim(model_names[new_pick])
-    myvars = mysim.model.mvars.default
+    mysim, myvars = sim(model_names[new_pick])
     return dropdown_models(new_pick), mvars(myvars)
 
+
+# callback to update the model variables with the sliders
 @app.callback(
     Output('dummy-output4', 'children'),
     [Input('slider-'+var, 'value') for var in myvars.index])
@@ -95,6 +138,7 @@ def update_mvars(*args):
         mysim.model.mvars.current.loc[var, 'Value'] = new_value
     return None
 
+# callback to run the simulator and display data when the button is clicked
 @app.callback(
     [
         Output('sim_plot4', 'figure'),
