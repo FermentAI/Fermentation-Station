@@ -89,10 +89,10 @@ class Model():
         self.model_path = model_path
         self.params = Vars(self.model_path, 'parameters.csv')
         self.mvars = Vars(self.model_path, 'manipulated_vars.csv')
-        self.diagram = None
         self.initial_values_dict = self.get_state_dict()
         self.model_class = self.get_model()
         self.subroutine_class = self.get_subroutine()
+        self.model_doc = self.model_class.rhs.__doc__
         self.reset()
 
     def reset(self):

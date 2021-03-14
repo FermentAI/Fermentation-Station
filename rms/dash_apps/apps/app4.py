@@ -67,6 +67,17 @@ def mvars(vars_df):
 # default to the first model 
 mysim, myvars = sim(model_names[0])
 
+# make a diagram, if any
+
+diagram = lambda simulator: dbc.Card(
+    [
+        dbc.CardImg(src=os.path.join(simulator.model.model_path,'diagram.png'), top=True, alt = 'Oh snap!. No diagram for this model!'),
+        dbc.CardBody(
+            html.P(simulator.model.model_doc, className="card-text")
+        ),
+    ],
+)
+
 # make a button to run the simulator
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
 
@@ -87,7 +98,7 @@ content = html.Div(
                 ),
             )
         ]),
-        dbc.Row(),
+        dbc.Row(diagram(mysim)),
         dbc.Row([
             dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
             dbc.Col(sim_plot, width = 9)
@@ -106,6 +117,7 @@ layout = html.Div(
     ],
 )
 
+print(os.path.join(mysim.model.model_path,'diagram.png'))
 
 # callback to update the simulator with the selected model
 @app.callback(
