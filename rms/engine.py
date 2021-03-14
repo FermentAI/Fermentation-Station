@@ -66,11 +66,29 @@ class Vars():
             else:
                 return None
 
+    def _eval_time(self, t:float):
+        """
+        Checks variables for functions, evaluates them with the current simulation time, and updates the current variables
 
-    def get_all_vars_dict(self):
+        Arguments
+        ---------
+            t:flaot
+        """
+        funs = self.default.Value.apply(callable)
+        if funs.any():
+            for i in self.default[funs].index:
+                self.current.loc[i,'Value'] = self.default.loc[i,'Value'](t)
+
+    def get_all_vars_dict(self, t=0):
         """
         Return the current variable values in a dictionary
+        
+        Arguments
+        ---------
+            t:flaot
+                Current time, provided by Simulator.
         """
+        self._eval_time(t)
         return {**self.current.Value}
 
 class Model():
@@ -86,13 +104,14 @@ class Model():
             model_path :
                 Path poiting to a specific model directory.
         """
-        self.model_path = model_path
-        self.params = Vars(self.model_path, 'parameters.csv')
-        self.mvars = Vars(self.model_path, 'manipulated_vars.csv')
+        self.path = model_path
+        self.params = Vars(self.path, 'parameters.csv')
+        self.mvars = Vars(self.path, 'manipulated_vars.csv')
         self.initial_values_dict = self.get_state_dict()
         self.model_class = self.get_model()
         self.subroutine_class = self.get_subroutine()
-        self.model_doc = self.model_class.rhs.__doc__
+        self.doc = self.model_class.rhs.__doc__
+        self.diagram = self.get_diagram()
         self.reset()
 
     def reset(self):
@@ -119,9 +138,9 @@ class Model():
                 If there is no model.py file
         """
         try:
-            spec = importlib.util.spec_from_file_location('model', os.path.join(self.model_path, 'model.py'))
+            spec = importlib.util.spec_from_file_location('model', os.path.join(self.path, 'model.py'))
         except:
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), os.path.join(self.model_path, 'model.py'))
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), os.path.join(self.path, 'model.py'))
         model = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(model)
         return model
@@ -149,19 +168,15 @@ class Model():
         except AttributeError:
             return None
 
-    def __eval_time(self, t:float):
+    def get_diagram(self):
         """
-        Checks variables for functions, evaluates them with the current simulation time, and updates the current variables
-
-        Arguments
-        ---------
-            t:flaot
-                Current time, provided by Simulator.
+        Loads model diagram. If file not found, load default image.
         """
-        funs = self.mvars.default.Value.apply(callable)
-        if funs.any():
-            for i in self.mvars.default[funs].index:
-                self.mvars.current.loc[i,'Value'] = self.mvars.default.loc[i,'Value'](t)
+        if os.path.isfile(os.path.join(self.path,'diagram.png')):
+            diagram_path =  os.path.join(self.path,'diagram.png')
+        else:
+            diagram_path = None # TODO
+        return diagram_path
 
     def get_vars_dict(self, t = 0.):
         """
@@ -172,8 +187,8 @@ class Model():
             t:flaot
                 Current time, provided by Simulator. Degaults to 0.
         """
-        self.__eval_time(t)
-        return {**self.params.get_all_vars_dict(), **self.mvars.current[~self.mvars.current.State].Value}
+        self.mvars._eval_time(t)
+        return {**self.params.get_all_vars_dict(t), **self.mvars.current[~self.mvars.current.State].Value}
 
     def get_all_vars_dict(self, t = 0.):
         """
@@ -184,8 +199,7 @@ class Model():
             t:flaot
                 Current time, provided by Simulator. Degaults to 0.
         """
-        self.__eval_time(t)
-        return {**self.params.get_all_vars_dict(), **self.mvars.get_all_vars_dict()}
+        return {**self.params.get_all_vars_dict(t), **self.mvars.get_all_vars_dict(t)}
 
     def get_state_dict(self, t = 0.):
         """
@@ -196,7 +210,7 @@ class Model():
             t:flaot
                 Current time, provided by Simulator. Degaults to 0.
         """
-        self.__eval_time(t)
+        self.mvars._eval_time(t)
         self.state = {**self.mvars.current[self.mvars.current.State].Value}
         return self.state
 
@@ -297,13 +311,23 @@ class Simulator(Caretaker):
     def run(self): #TODO: beautify
 
 
-        data = [[] for _ in range(len(self.model.get_state_dict()))]
+        mdata = self.model.mvars.current.T[0:0].rename_axis('Time')
+        
+        try:
+            cdata = self.subroutines.subrvars.current.T[0:0].rename_axis('Time')
+        except:
+            cdata = pd.DataFrame()
 
         for t in self.time:
             state = self.model.get_state_dict()
-            
+            mdata = pd.concat([mdata,pd.DataFrame(self.model.mvars.get_all_vars_dict(t),index = [t])])
+
             # run any subroutine
-            if self.subroutines: self.subroutines._run_all(t)
+            if self.subroutines:
+                self.subroutines._run_all(t)
+                cdata = pd.concat([cdata,pd.DataFrame(self.subroutines.subrvars.get_all_vars_dict(t),index = [t])])
+            else:
+                pass
 
             # update, integrate, log
             self.simulators[None].set_parameters(self.model.get_vars_dict(t))
@@ -313,7 +337,6 @@ class Simulator(Caretaker):
                 # log data
                 for i,(r,k) in enumerate(zip(results, state.keys())):
                     state[k] = r.values[-1]
-                    data[i].append(r.values[-1])
 
             elif self.integrator == 'scipy':
 
@@ -322,14 +345,13 @@ class Simulator(Caretaker):
                 # log data
                 for i,(r,k) in enumerate(zip(results.T, state.keys())):
                     state[k] = r
-                    data[i].append(r)
             else:
                 raise Exception('Integrator not recognized. Please use "CVODE" or "scipy".')
 
 
             self.model.update_mvars_from_dict(state, also_IC = True)
 
-        return pd.DataFrame(data).T.set_index(self.time, 'Time')
+        return mdata
 
 class Subroutine():
     """
@@ -346,7 +368,7 @@ class Subroutine():
                 Simulator object running the model and subroutines
         """
         self.model = model
-        self.subrvars = Vars(model.model_path, 'controlled_vars.csv')
+        self.subrvars = Vars(model.path, 'controlled_vars.csv')
         self.subroutine_vars = self.subrvars.get_all_vars_dict()
         self.model_parameters = model.get_all_vars_dict()
         self.model_state = model.get_state_dict()

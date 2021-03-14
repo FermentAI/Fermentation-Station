@@ -72,9 +72,9 @@ mysim, mymvars = sim(model_names[0])
 
 diagram = lambda simulator: dbc.Card(
     [
-        dbc.CardImg(src=os.path.join(simulator.model.model_path,'diagram.png'), top=True, alt = 'Oh snap!. No diagram for this model!'),
+        dbc.CardImg(src=simulator.model.diagram, top=True, alt = 'Oh snap!. No diagram for this model!'),
         dbc.CardBody(
-            html.P(simulator.model.model_doc, className="card-text")
+            html.P(simulator.model.doc, className="card-text")
         ),
     ],
 )
@@ -128,7 +128,7 @@ layout = html.Div(
     ],
 )
 
-print(os.path.join(mysim.model.model_path,'diagram.png'))
+print(os.path.join(mysim.model.path,'diagram.png'))
 
 # callback to update the simulator with the selected model
 @app.callback(
@@ -165,12 +165,13 @@ def update_mvars_slider(*args):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-    for i,var in enumerate(mymvars.index):
-        if 'input' in button_id:
-            sliders[i] = inputs[i]
-        else:
-            inputs[i] = sliders[i]
-        mysim.model.mvars.current.loc[var, 'Value'] = sliders[i]
+    if len(button_id) > 3:
+        for i,var in enumerate(mymvars.index):
+            if 'input' in button_id:
+                sliders[i] = inputs[i]
+            else:
+                inputs[i] = sliders[i]
+            mysim.model.mvars.current.loc[var, 'Value'] = sliders[i]
 
     return (*inputs, *sliders)
 
