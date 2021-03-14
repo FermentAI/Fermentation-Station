@@ -57,7 +57,7 @@ def NamedSlider(name, **kwargs):
             [
                 dbc.Label(f"{name}\n ({other['units']})", width=8),
                 dbc.Col(
-                    dbc.Input(id=kwargs['id']+'-input', type="number", placeholder = kwargs['value']),
+                    dbc.Input(id=kwargs['id']+'-input', type="number", value = kwargs['value'], step = kwargs['step']),
                     width=4,
                 ),
             ],

@@ -6,7 +6,6 @@ from dash_apps.shared_components import *
 from dash_apps.apps.myapp import app
 import dash
 
-
 from engine import Model, Simulator
 import os
 import plotly.express as px
@@ -43,12 +42,12 @@ def mvars(vars_df):
     """ 
     sliders = []
     for var in vars_df.index:
-        if vars_df.loc[var,'Min'] is not None:
+        if vars_df.loc[var,'Min'] is not False:
             minval = vars_df.loc[var,'Min']
         else:
             minval = vars_df.loc[var,'Value']*0.1
 
-        if vars_df.loc[var,'Max'] is not None:
+        if vars_df.loc[var,'Max'] is not False:
             maxval = vars_df.loc[var,'Max']
         else:
             maxval = vars_df.loc[var,'Value']*1.9
@@ -118,6 +117,7 @@ def update_label(*args):
     ctx = dash.callback_context
     # this gets the id of the button that triggered the callback
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
     try:
         new_pick = model_names.index(button_id)
     except:
@@ -128,15 +128,28 @@ def update_label(*args):
     return dropdown_models(new_pick), mvars(myvars)
 
 
-# callback to update the model variables with the sliders
+# callback to update the model variables with the sliders / input box
 @app.callback(
-    Output('dummy-output4', 'children'),
+    [Output('slider-'+var+'-input', 'value') for var in myvars.index],
+    [Output('slider-'+var, 'value') for var in myvars.index],
+    [Input('slider-'+var+'-input', 'value') for var in myvars.index],
     [Input('slider-'+var, 'value') for var in myvars.index])
 
-def update_mvars(*args):
-    for var, new_value in zip(myvars.index,args):
-        mysim.model.mvars.current.loc[var, 'Value'] = new_value
-    return None
+def update_mvars_slider(*args):
+    sliders = list(args[int(len(args)/2):])
+    inputs = list(args[:int(len(args)/2)])
+
+    ctx = dash.callback_context
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+
+    for i,var in enumerate(myvars.index):
+        if 'input' in button_id:
+            sliders[i] = inputs[i]
+        else:
+            inputs[i] = sliders[i]
+        mysim.model.mvars.current.loc[var, 'Value'] = sliders[i]
+
+    return (*inputs, *sliders)
 
 # callback to run the simulator and display data when the button is clicked
 @app.callback(

@@ -14,14 +14,14 @@ class MyModel(BioprocessModel):
         F = self.model_parameters['F']
 
         # Defines the derivatives.
-        dP = -F*P/V + self.Rp(X,S)
-        dS = F*(Sf-S)/V - self.Rg(X,S)/Yxs
-        dV = F
-        dX = -F*X/V + self.Rg(X,S)
+        dPdt = -F*P/V + self.Rp(X,S)
+        dSdt = F*(Sf-S)/V - self.Rg(X,S)/Yxs
+        dVdt = F
+        dXdt = -F*X/V + self.Rg(X,S)
 
         # Returns the derivative as list (or numpy array).
         # The order corresponds to the state vector.
-        return [dP,dS,dV,dX]
+        return [dPdt,dSdt,dVdt,dXdt]
     
     # Monoid expression
     def mu(self,S):
