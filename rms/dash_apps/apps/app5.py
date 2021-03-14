@@ -167,9 +167,15 @@ def update_mvars_slider(*args):
 @app.callback(
     [
 #        Output('sim_plot4', 'figure'),
+        Output('container','children'),
         Output('mvars4','children')
     ],
-    Input('btn_run', 'n_clicks'))
+    [
+        Input('btn_run', 'n_clicks'),
+        Input('add-chart', 'n_clicks')
+    ],
+    [State('container','children')]
+)
 
 def update_figure(n_clicks):
     global data
@@ -182,11 +188,11 @@ def update_figure(n_clicks):
 
         
 # Takes the n-clicks of the add-chart button and the state of the container children.
-@app.callback(
-    Output('container','children'),
-    [Input('add-chart','n_clicks')],
-    [State('container','children')]
-)
+#@app.callback(
+#    Output('container','children'),
+#    [Input('add-chart','n_clicks')],
+#    [State('container','children')]
+#)
 
 #This function is triggered when the add-chart clicks changes. This function is not triggered by changes in the state of the container. If children changes, state saves the change in the callback.
 def display_graphs(n_click, div_children):
