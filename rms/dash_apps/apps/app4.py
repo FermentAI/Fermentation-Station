@@ -2,7 +2,8 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-from dash_apps.shared_components import *
+import dash_apps.shared_components as dsc
+from dash_apps.shared_styles import *
 from dash_apps.apps.myapp import app
 import dash
 
@@ -32,7 +33,7 @@ def sim(model_name):
     variables = simuluator.model.mvars.default
     return simuluator, variables
 
-def mvars(vars_df):
+def sliders_from_df(vars_df):
     """
     Generates sliders based on the variables in a DataFrame
 
@@ -52,7 +53,7 @@ def mvars(vars_df):
         else:
             maxval = vars_df.loc[var,'Value']*1.9
 
-        slider = NamedSlider(
+        slider = dsc.NamedSlider(
                     name= vars_df.loc[var,'Label'],
                     id="slider-"+var,
                     min=minval,
@@ -65,7 +66,7 @@ def mvars(vars_df):
     return sliders
 
 # default to the first model 
-mysim, myvars = sim(model_names[0])
+mysim, mymvars = sim(model_names[0])
 
 # make a diagram, if any
 
@@ -84,11 +85,11 @@ run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", col
 # make a plot for output 
 sim_plot = dcc.Graph(id = 'sim_plot4')
 
-
 # layout all the components to be displayed
 content = html.Div(
     [
         dbc.Row([
+            dbc.Col(width = 9),
             dbc.Col(
                 dbc.DropdownMenu(
                     label = "Select a model",
@@ -98,13 +99,23 @@ content = html.Div(
                 ),
             )
         ]),
-        dbc.Row(diagram(mysim)),
+
         dbc.Row([
-            dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
-            dbc.Col(sim_plot, width = 9)
+            dbc.Col([
+                *dsc.collapse(sliders_from_df(mymvars), 'Manipulated Variables', 'mvars-collapse'),
+                *dsc.collapse(sliders_from_df(mymvars), 'Controlled Variables', 'cvars-collapse')
+            ],
+                id = 'sliders2', width = 2),
+            dbc.Col(diagram(mysim), width = 6),
+            dbc.Col(diagram(mysim), width = 4)
         ]),
+
         dbc.Row(run_btn),
-        dbc.Row(id = 'mvars4')
+
+        dbc.Row([
+            dbc.Col(sim_plot, width = 9),
+            dbc.Col(id = 'mvars4')
+        ]),
     ],
     id="page-content",
     style = CONTENT_STYLE
@@ -122,7 +133,7 @@ print(os.path.join(mysim.model.model_path,'diagram.png'))
 # callback to update the simulator with the selected model
 @app.callback(
     [Output("dd_models", "children"),
-    Output("sliders", "children")],
+    Output("mvars-collapse", "children")],
     [Input(m, "n_clicks") for m in model_names],
 )
 def update_label(*args):
@@ -135,17 +146,17 @@ def update_label(*args):
     except:
         new_pick = 0
         
-    global mysim, myvars
-    mysim, myvars = sim(model_names[new_pick])
-    return dropdown_models(new_pick), mvars(myvars)
+    global mysim, mymvars
+    mysim, mymvars = sim(model_names[new_pick])
+    return dropdown_models(new_pick), sliders_from_df(mymvars)
 
 
-# callback to update the model variables with the sliders / input box
+# callback to update the model variables with the sliders / input boxes
 @app.callback(
-    [Output('slider-'+var+'-input', 'value') for var in myvars.index],
-    [Output('slider-'+var, 'value') for var in myvars.index],
-    [Input('slider-'+var+'-input', 'value') for var in myvars.index],
-    [Input('slider-'+var, 'value') for var in myvars.index])
+    [Output('slider-'+var+'-input', 'value') for var in mymvars.index],
+    [Output('slider-'+var, 'value') for var in mymvars.index],
+    [Input('slider-'+var+'-input', 'value') for var in mymvars.index],
+    [Input('slider-'+var, 'value') for var in mymvars.index])
 
 def update_mvars_slider(*args):
     sliders = list(args[int(len(args)/2):])
@@ -154,7 +165,7 @@ def update_mvars_slider(*args):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-    for i,var in enumerate(myvars.index):
+    for i,var in enumerate(mymvars.index):
         if 'input' in button_id:
             sliders[i] = inputs[i]
         else:
@@ -172,8 +183,24 @@ def update_mvars_slider(*args):
     Input('btn_run', 'n_clicks'))
 def update_figure(n_clicks):
     data = mysim.run()
-    table = generate_table(mysim.model.mvars.current)
+    table = dsc.generate_table(mysim.model.mvars.current)
     fig = px.scatter(data)
     mysim.model.reset()
     return fig, table
 
+@app.callback(
+    Output("mvars-collapse", "is_open"),
+    [Input("mvars-collapse-button", "n_clicks")],
+    [State("mvars-collapse", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
+
+layout = html.Div(
+    [
+        content,
+        
+    ],
+)

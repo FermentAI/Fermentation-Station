@@ -80,6 +80,20 @@ def generate_table(dataframe, max_rows=20):
         ])
     ])
 
+def collapse(child, bttn_label, id):
+    return [
+            dbc.Button(
+                bttn_label,
+                id=id+'-button',
+                className="mb-3",
+                color="primary",
+            ),
+            dbc.Collapse(
+                child,
+                id=id,
+            ),
+        ]
+
 '''
 from sympy import var, stats
 from sympy import sympify
