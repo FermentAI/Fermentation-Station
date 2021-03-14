@@ -9,6 +9,13 @@ class MyModel(BioprocessModel):
     Must define rhs(self,t,y) as a system of ODEs.
     """
     def rhs(self, t, y):
+        """
+        An exothermic stirred tank reactor where the objective is to control the reactor temperature
+        through manipulation of cooling water through the reactor cooling jacket.
+        \n By Jeffrey Kantor
+        \n https://jckantor.github.io/CBE30338/04.11-Implementing-PID-Control-in-Nonlinear-Simulations.html
+    
+        """
         # Unpacks the state vector. The states are alphabetically ordered.
         C,T,Tc = y
 

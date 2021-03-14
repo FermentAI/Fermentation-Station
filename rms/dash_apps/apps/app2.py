@@ -1,9 +1,24 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
+import dash_bootstrap_components as dbc
 from dash_apps.shared_components import *
 from dash_apps.apps.myapp import app
 
+collapse = html.Div(
+    [
+        dbc.Button(
+            "Open collapse",
+            id="collapse-button",
+            className="mb-3",
+            color="primary",
+        ),
+        dbc.Collapse(
+            dbc.Card(dbc.CardBody("This content is hidden in the collapse")),
+            id="collapse",
+        ),
+    ]
+)
 
 content = html.Div(
     [
@@ -18,16 +33,16 @@ content = html.Div(
         ),
         html.Div(id='app-1-display-value'),
         dcc.Link('Go to App 1', href='/'),
+        collapse
     ],
     id="page-content",
     style = CONTENT_STYLE
 )
 
-layout = html.Div(
-    [
-        content,
-    ],
-)
+
+
+
+
 
 
 @app.callback(
