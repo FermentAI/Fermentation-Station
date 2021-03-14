@@ -143,8 +143,8 @@ print(os.path.join(mysim.model.path,'diagram.png'))
 
 # callback to update the simulator with the selected model
 @app.callback(
-    [Output("dd_models", "children"),
-    Output("mvars-collapse", "children")],
+    [Output("dd_models", "children")],
+    [Output(s+"-collapse", "children") for s in ['mvars','cvars']],#,'mparams','sparams']],
     [Input(m, "n_clicks") for m in model_names],
 )
 def update_label(*args):
@@ -158,7 +158,7 @@ def update_label(*args):
         new_pick = 0
         
     sim(model_names[new_pick])
-    return dropdown_models(new_pick), sliders_from_df(mymvars)
+    return dropdown_models(new_pick), sliders_from_df(mymvars),sliders_from_df(mycvars)
 
 
 # callback to update the model variables with the sliders / input boxes
@@ -200,14 +200,23 @@ def update_figure(n_clicks):
     return fig, table
 
 @app.callback(
-    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
-    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars','mparams','sparams']],
-    [State(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
+    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
+    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars']],#,'mparams','sparams']],
+    [State(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
 )
-def toggle_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+def toggle_collapse(*args):
+    are_open = list(args[int(len(args)/2):])
+    ns = list(args[:int(len(args)/2)])
+    print(args)
+
+    ctx = dash.callback_context
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    # this dsnt work
+    for i,n in enumerate(ns):
+        if n:
+            are_open[i] = not are_open[i]
+
+    return are_open
 
 layout = html.Div(
     [
@@ -215,3 +224,4 @@ layout = html.Div(
         
     ],
 )
+
