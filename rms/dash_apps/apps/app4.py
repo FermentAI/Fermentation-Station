@@ -14,7 +14,6 @@ import plotly.express as px
 
 path = os.getcwd()
 models = [os.path.join(path,'rms','models', o) for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))]
-print(models,type(models[0]))
 
 sim = Simulator(model = Model(models[0]))
 
@@ -56,7 +55,7 @@ content = html.Div(
             dbc.Col(sim_plot, width = 9)
         ]),
         dbc.Row(run_btn),
-        dbc.Row(id = 'mvars')
+        dbc.Row(id = 'mvars4')
     ],
     id="page-content",
     style = CONTENT_STYLE
@@ -81,7 +80,7 @@ def update_mvars(*args):
 @app.callback(
     [
         Output('sim_plot', 'figure'),
-        Output('mvars','children')
+        Output('mvars4','children')
     ],
     Input('btn_run', 'n_clicks'))
 def update_figure(n_clicks):

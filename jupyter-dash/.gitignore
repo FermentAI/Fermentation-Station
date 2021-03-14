@@ -1,8 +1,0 @@
-*.egg-info
-.idea
-/extensions/jupyterlab/node_modules/
-/extensions/jupyterlab/*.tgz
-/dist
-/build/
-.ipynb_checkpoints
-/extensions/jupyterlab/README.md

@@ -3,11 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 from dash_apps.apps.myapp import app
-<<<<<<< HEAD
 from dash_apps.apps import app4, app2
-=======
-from dash_apps.apps import app3
->>>>>>> 7e3d23927b372b8825b8a73bfb427a6591ea9bb4
 import dash_apps.shared_callbacks
 from dash_apps.shared_components import navbar, sidebar, sidebar_btn
 

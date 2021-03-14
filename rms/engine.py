@@ -225,63 +225,6 @@ class Model():
             new_mvars_dict = {key+'0': value for key, value in new_mvars_dict.items()}
             _update(new_mvars_dict)
 
-class Subroutine():
-    """
-    Keeps track of all subrutine related info at a high level
-    Receives model and simluator
-    """
-    def __init__(self, model: Model, simulator: Simulator):
-        """
-        Arguments
-        ---------
-            model : Model
-                Model object this subroutine is associated with
-            simulator : Simulator
-                Simulator object running the model and subroutines
-        """
-        self.model = model
-        self.subrvars = Vars(model.model_path, 'controlled_vars.csv')
-        self.subroutine_vars = self.subrvars.get_all_vars_dict()
-        self.model_parameters = model.get_all_vars_dict()
-        self.model_state = model.get_state_dict()
-        self.simulator_vars = simulator.simvars.get_all_vars_dict()
-
-        self._initialization()
-
-    def _initialization(self):
-        """
-        Method run once in the first integration iteration. Useful for initializing variables.
-
-        THIS METHOD SHOULD BE OVERWRITTEN BY USER
-        """
-        pass
-    
-    def _run_all(self,t: float):
-        """
-        Eexecutes all subroutine methods specified by the user and udpates variables
-
-        Arguments
-        ---------
-            t:flaot
-                Current time, provided by Simulator.
-        
-        Raises
-        ------
-            SubroutineError
-        """
-        self.model_parameters = self.model.get_all_vars_dict(t)
-        self.model_state = self.model.get_state_dict(t)
-
-        all_methods = (getattr(self, name) for name in dir(self))
-        self.exe_methods = filter(lambda x: not x.__name__.startswith('_') ,filter(inspect.ismethod,all_methods))
-        for method in self.exe_methods:
-            try:
-                method()
-            except:
-                raise SubroutineError('Run into an issue with the subroutine at time {}'.format(t))
-        
-        self.model.update_mvars_from_dict(self.model_parameters)
-
 class Simulator(Caretaker):
     """
     Wrapper for pyfoomb.Caretacker
@@ -389,8 +332,62 @@ class Simulator(Caretaker):
 
         return pd.DataFrame(data).T.set_index(self.time, 'Time')
 
+class Subroutine():
+    """
+    Keeps track of all subrutine related info at a high level
+    Receives model and simluator
+    """
+    def __init__(self, model: Model, simulator: Simulator):
+        """
+        Arguments
+        ---------
+            model : Model
+                Model object this subroutine is associated with
+            simulator : Simulator
+                Simulator object running the model and subroutines
+        """
+        self.model = model
+        self.subrvars = Vars(model.model_path, 'controlled_vars.csv')
+        self.subroutine_vars = self.subrvars.get_all_vars_dict()
+        self.model_parameters = model.get_all_vars_dict()
+        self.model_state = model.get_state_dict()
+        self.simulator_vars = simulator.simvars.get_all_vars_dict()
 
+        self._initialization()
 
+    def _initialization(self):
+        """
+        Method run once in the first integration iteration. Useful for initializing variables.
+
+        THIS METHOD SHOULD BE OVERWRITTEN BY USER
+        """
+        pass
+    
+    def _run_all(self,t: float):
+        """
+        Eexecutes all subroutine methods specified by the user and udpates variables
+
+        Arguments
+        ---------
+            t:flaot
+                Current time, provided by Simulator.
+        
+        Raises
+        ------
+            SubroutineError
+        """
+        self.model_parameters = self.model.get_all_vars_dict(t)
+        self.model_state = self.model.get_state_dict(t)
+
+        all_methods = (getattr(self, name) for name in dir(self))
+        self.exe_methods = filter(lambda x: not x.__name__.startswith('_') ,filter(inspect.ismethod,all_methods))
+        for method in self.exe_methods:
+            try:
+                method()
+            except:
+                raise SubroutineError('Run into an issue with the subroutine at time {}'.format(t))
+        
+        self.model.update_mvars_from_dict(self.model_parameters)
 # this dsnt work
 # class RMS_Model(BioprocessModel):
 #     '''
