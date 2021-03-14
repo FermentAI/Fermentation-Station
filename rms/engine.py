@@ -38,7 +38,7 @@ class Vars():
         self.default = self.read_vars()
         self.current = self.default
     
-    def __update(self, pd:pd.DataFrame):
+    def _update(self, pd:pd.DataFrame):
         """
         Updates current variable values with values from passed DataFrame, based on index
 
@@ -218,7 +218,7 @@ class Model():
         def _update(new_mvars_dict):
             new_mvars_df = pd.DataFrame.from_dict(new_mvars_dict, orient = 'index', columns = ['Value'])
             new_mvars_df.index.name = 'Var'
-            self.mvars.__update(new_mvars_df)
+            self.mvars._update(new_mvars_df)
 
         _update(new_mvars_dict)
         if also_IC:

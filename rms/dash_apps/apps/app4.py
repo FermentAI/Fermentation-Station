@@ -13,30 +13,28 @@ import plotly.express as px
 
 
 path = os.getcwd()
-models = [os.path.join(path,'rms','models', o) for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))]
+model_names = [o for o in sorted(os.listdir(os.path.join('rms','models'))) if os.path.isdir(os.path.join('rms','models',o))]
+model_path = lambda model_name: os.path.join(path,'rms','models', model_name) 
 
-sim = Simulator(model = Model(models[0]))
+sim = lambda model_name: Simulator(model = Model(model_path(model_name)))
+mvars = lambda vars_df: [NamedSlider(
+                        name= vars_df.loc[var,'Label'],
+                        id="slider-"+var,
+                        min=0,
+                        max=500,
+                        step=100,
+                        value = vars_df.loc[var,'Value'],
+                        other = {'units':vars_df.loc[var,'Units']}
+                        )
+                        for var in vars_df.index]
 
-lol = sim.model.mvars.default
-mvars = [NamedSlider(
-            name= lol.loc[var,'Label'],
-            id="slider-"+var,
-            min=0,
-            max=500,
-            step=100,
-            value = lol.loc[var,'Value'],
-            other = {'units':lol.loc[var,'Units']}
-            )
-     for var in lol.index]
+mysim = sim(model_names[0])
+myvars = mysim.model.mvars.default
 
+dropdown_models = [dbc.DropdownMenuItem(m, active = True) if i is 0 else dbc.DropdownMenuItem(m, active = False) for i,m in enumerate(model_names)]
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
-sim_plot = dcc.Graph(id = 'sim_plot')
+sim_plot = dcc.Graph(id = 'sim_plot4')
 
-dropdown_items = [
-    dbc.DropdownMenuItem(models[0]),
-    dbc.DropdownMenuItem(models[1]),
-    dbc.DropdownMenuItem(models[2]),
-]
 
 content = html.Div(
     [
@@ -44,14 +42,15 @@ content = html.Div(
             dbc.Col(
                 dbc.DropdownMenu(
                     label = "Select a model",
-                    children = dropdown_items,
+                    children = dropdown_models,
                     right=False,
+                    id = 'dd_models'
                 ),
             )
         ]),
         dbc.Row(dbc.Label("Alo, This is a row", width=2)),
         dbc.Row([
-            dbc.Col(id = 'sliders', children = mvars, width = 2),
+            dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
             dbc.Col(sim_plot, width = 9)
         ]),
         dbc.Row(run_btn),
@@ -64,22 +63,31 @@ content = html.Div(
 layout = html.Div(
     [
         content,
-        html.Div(id='dummy-output')
+        html.Div(id='dummy-output4')
     ],
 )
 
+# @app.callback(
+#     Output('dummy-output4', 'children'),
+#     Input('dd_down', 'value'))
+
+# def update_mvars():
+#     for var, new_value in zip(myvars.index,args):
+#         mysim.model.mvars.current.loc[var, 'Value'] = new_value
+#     return None
+
 @app.callback(
-    Output('dummy-output', 'children'),
-    [Input('slider-'+var, 'value') for var in lol.index])
+    Output('dummy-output4', 'children'),
+    [Input('slider-'+var, 'value') for var in myvars.index])
 
 def update_mvars(*args):
-    for var, new_value in zip(lol.index,args):
-        sim.model.mvars.current.loc[var, 'Value'] = new_value
+    for var, new_value in zip(myvars.index,args):
+        mysim.model.mvars.current.loc[var, 'Value'] = new_value
     return None
 
 @app.callback(
     [
-        Output('sim_plot', 'figure'),
+        Output('sim_plot4', 'figure'),
         Output('mvars4','children')
     ],
     Input('btn_run', 'n_clicks'))
