@@ -91,6 +91,9 @@ diagram = lambda simulator: dbc.Card(
 # make a button to run the simulator
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
 
+# make a button for plots
+plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mr-1", id="btn_plot")
+
 # make a plot for output 
 sim_plot = dcc.Graph(id = 'sim_plot4')
 
@@ -217,11 +220,4 @@ def toggle_collapse(*args):
             are_open[i] = not are_open[i]
 
     return are_open
-
-layout = html.Div(
-    [
-        content,
-        
-    ],
-)
 
