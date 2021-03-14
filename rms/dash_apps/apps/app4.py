@@ -28,10 +28,18 @@ def sim(model_name):
     Arguments
     ---------
         model_name
-    """ 
-    simuluator = Simulator(model = Model(model_path(model_name)))
-    variables = simuluator.model.mvars.default
-    return simuluator, variables
+    """
+    global mysim, mymvars, mycvars, mymparams, mysparams
+    mysim = Simulator(model = Model(model_path(model_name)))
+    mymvars = mysim.model.mvars.default
+    try:
+        mycvars = mysim.subroutine.subroutine_vars.default
+    except:
+        mycvars = None
+
+    mymparams = mysim.model.params.default
+    mysparams = mysim.simvars.default
+    return 
 
 def sliders_from_df(vars_df):
     """
@@ -40,7 +48,8 @@ def sliders_from_df(vars_df):
     Arguments
     ---------
         vars_df: Pandas DataFrame containing variables
-    """ 
+    """
+    if vars_df is None: return
     sliders = []
     for var in vars_df.index:
         if vars_df.loc[var,'Min'] is not False:
@@ -66,7 +75,7 @@ def sliders_from_df(vars_df):
     return sliders
 
 # default to the first model 
-mysim, mymvars = sim(model_names[0])
+sim(model_names[0])
 
 # make a diagram, if any
 
@@ -103,7 +112,9 @@ content = html.Div(
         dbc.Row([
             dbc.Col([
                 *dsc.collapse(sliders_from_df(mymvars), 'Manipulated Variables', 'mvars-collapse'),
-                *dsc.collapse(sliders_from_df(mymvars), 'Controlled Variables', 'cvars-collapse')
+                *dsc.collapse(sliders_from_df(mycvars), 'Control Variables', 'cvars-collapse'),
+                # *dsc.collapse(inputs_from_df(mymparams), 'Model Parameters', 'mpars-collapse'),
+                # *dsc.collapse(inputs_from_df(mysparams), 'Simulation Settings', 'spars-collapse')
             ],
                 id = 'sliders2', width = 2),
             dbc.Col(diagram(mysim), width = 6),
@@ -146,8 +157,7 @@ def update_label(*args):
     except:
         new_pick = 0
         
-    global mysim, mymvars
-    mysim, mymvars = sim(model_names[new_pick])
+    sim(model_names[new_pick])
     return dropdown_models(new_pick), sliders_from_df(mymvars)
 
 
@@ -190,9 +200,9 @@ def update_figure(n_clicks):
     return fig, table
 
 @app.callback(
-    Output("mvars-collapse", "is_open"),
-    [Input("mvars-collapse-button", "n_clicks")],
-    [State("mvars-collapse", "is_open")],
+    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
+    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars','mparams','sparams']],
+    [State(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
 )
 def toggle_collapse(n, is_open):
     if n:
