@@ -6,6 +6,7 @@ from dash_apps.shared_components import *
 from dash_apps.apps.myapp import app
 import dash
 import numpy as np
+import pandas as pd
 from dash.dependencies import Input, Output, State, MATCH, ALL
 
 from engine import Model, Simulator
@@ -197,7 +198,8 @@ def display_graphs(n_clicks, div_children):
                 },
                 options=[{'label':'Bar Chart', 'value': 'bar'},
                          {'label': 'Line Chart', 'value': 'line'},
-                         {'label': 'Pie Chart', 'value':'pie'}],
+                         {'label': 'Scatter Chart', 'value':'scatter'}],
+#                         {'label': 'Pie Chart', 'value':'pie'}],
                 value='line',
             ),
             dcc.Dropdown(
@@ -238,21 +240,25 @@ def display_graphs(n_clicks, div_children):
 # 
 def update_graph(var_1, var_2, chart_type):
     print(var_1)
-    new_df = data[data[0].isin(var_1)]
+#    new_df = data[data[0].isin(var_1)]
+    new_df = data
     if chart_type == 'bar':
-        new_df = new_df.groupby([var_2], as_index=False)[data.iloc[0]],
-        fig = px.bar(new_df, x = var_2, y=var_1, color=var_2)
+#        new_df = new_df.groupby([var_1], as_index=False)[data.iloc[0]],
+        fig = px.bar(new_df, x = var_1, y=var_2, color=var_2),
         return fig
     elif chart_type == 'line':
         if len(var_1) == 0:
             return {}
         else:
-            new_df = new_df.groupby([var_1, 'Time'], as_index=False)[data.iloc[0]]
-            fig = px.lin(new_df, x=data.index, y=var_1, color=var_2)
+#            new_df = new_df.groupby([var_1, 'Time'], as_index=False)[data.iloc[0]]
+            fig = px.line(new_df, x=var_1, y=var_2),
             return fig
-    elif chart_type == 'pie':
-        fig = px.pie(new_df, names=var_2, values=var_1)
+    elif chart_type == 'scatter':
+        fig = px.scatter(new_df, x=var_1, y=var_2),
         return fig
+#    elif chart_type == 'pie':
+#        fig = px.pie(new_df, names=[var_1,var_2], values=[var_1,var_2])
+#        return fig
 
 
 # # callback to update the simulator with the selected model
