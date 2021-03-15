@@ -241,19 +241,22 @@ def display_graphs(n_clicks, div_children):
 def update_graph(var_1, var_2, chart_type):
     print(var_1)
 #    new_df = data[data[0].isin(var_1)]
-    new_df = data
+    new_df = data.reset_index()
     if chart_type == 'bar':
+        new_df = new_df.groupby(['index'])[[var_2]]
 #        new_df = new_df.groupby([var_1], as_index=False)[data.iloc[0]],
-        fig = px.bar(new_df, x = var_1, y=var_2, color=var_2),
+        fig = px.bar(new_df, x = var_2, y=var_1),
         return fig
     elif chart_type == 'line':
         if len(var_1) == 0:
             return {}
         else:
+            new_df = new_df.groupby('index')
 #            new_df = new_df.groupby([var_1, 'Time'], as_index=False)[data.iloc[0]]
             fig = px.line(new_df, x=var_1, y=var_2),
             return fig
     elif chart_type == 'scatter':
+        new_df = new_df.groupby('index')
         fig = px.scatter(new_df, x=var_1, y=var_2),
         return fig
 #    elif chart_type == 'pie':
