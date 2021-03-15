@@ -242,7 +242,7 @@ def display_graphs(n_click, div_children):
 
 
 
-# callback to update the graphs with the selected variables and graph types
+# callback to update the graphs with the selected variables and graph types. Input MATCH triggers the update_graph when the user changes the index. The output index will match the input index. A figure is returned in the output, given the dynamic-graph type chosen.
 @app.callback(
     Output({'type': 'dynamic-graph', 'index':MATCH}, 'figure'),
     [Input(component_id={'type': 'dynamic-dpn-var1', 'index': MATCH}, component_property='value'),
