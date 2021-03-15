@@ -23,6 +23,7 @@ def display_page(pathname):
     if pathname == '/':
         return app5.layout
     elif pathname == '/app2':
+    elif pathname == '/app5':
          return app2.layout
     else:
         return dbc.Jumbotron(
