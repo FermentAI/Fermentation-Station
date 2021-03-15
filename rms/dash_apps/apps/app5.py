@@ -227,8 +227,6 @@ def display_graphs(n_clicks, div_children):
     div_children.append(new_child)
     return div_children
 
-
-
 # callback to update the graphs with the selected variables and graph types. Input MATCH triggers the update_graph when the user changes the index. The output index will match the input index. A figure is returned in the output, given the dynamic-graph type chosen.
 @app.callback(
     Output({'type': 'dynamic-graph', 'index':MATCH}, 'figure'),

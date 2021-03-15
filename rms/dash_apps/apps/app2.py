@@ -2,8 +2,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-from dash_apps.shared_components import *
-from dash_apps.apps.myapp import app
+import rms.dash_apps
+from rms.dash_apps.shared_components import *
+from rms.dash_apps.apps.myapp import app
 
 collapse = html.Div(
     [

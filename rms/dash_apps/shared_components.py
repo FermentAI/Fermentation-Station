@@ -1,7 +1,8 @@
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash_apps.shared_styles import *
+import rms.dash_apps
+from rms.dash_apps.shared_styles import *
 
 # https://stackoverflow.com/questions/62732631/how-to-collapsed-sidebar-in-dash-plotly-dash-bootstrap-components
 navbar = dbc.NavbarSimple(

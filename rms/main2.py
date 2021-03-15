@@ -2,10 +2,11 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-from dash_apps.apps.myapp import app
-from dash_apps.apps import app5, app2
-import dash_apps.shared_callbacks
-from dash_apps.shared_components import navbar, sidebar, sidebar_btn
+import rms.dash_apps
+from rms.dash_apps.apps.myapp import app
+from rms.dash_apps.apps import app4, app2
+import rms.dash_apps.shared_callbacks
+from rms.dash_apps.shared_components import navbar, sidebar, sidebar_btn
 
 # visit http://127.0.0.1:8050/ in your web browser.
 
@@ -21,7 +22,7 @@ app.layout = html.Div([
               Input('url', 'pathname'))
 def display_page(pathname):
     if pathname == '/':
-        return app5.layout
+        return app4.layout
     elif pathname == '/app2':
          return app2.layout
     else:
