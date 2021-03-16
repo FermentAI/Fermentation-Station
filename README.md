@@ -57,6 +57,62 @@ The app loads a single chart without any lines or plots. From that point, you ca
 
 ## Running Tests:
 
+## Code Workflow
+```
+|   LICENSE
+|   README.md
+|   environment.yml
+|   setup.py
++---rms
+|   +---dash_apps
+|   |      __init__.py
+|   |      shared_callbacks.cpython-38.pyc
+|   |      shared_components.cpython-38.pyc
+|   |      shared_styles.cpython-38.pyc
+|   +---apps
+|   |      dummy.py
+|   |      main.py
+|   |      myapp.py
+|   +---shared_callbacks.py
+|   +---shared_components.py
+|   +---shared_styles.py
++---dash_main.py
++---docs
+|       components_RMS.svg
+|       landing_frontend_RMS.svg
+|       tech_review_RMS.pdf
+|       use_cases.md
+|
++---engine.py
++---models
+|   +---jckantor_complex
+|   |       controlled_vars.csv
+|   |       diagram.png
+|   |       manipulated_vars.csv
+|   |       model.py
+|   |       parameters.csv
+|   +---jckantor_simple
+|   |       manipulated_vars.csv
+|   |       model.py
+|   |       parameters.csv
+|   +---penicillin_goldrick_2017
+|   |       model.py
++---simulator_vars.csv
++---test.py
+```
+
+## Running Tests
+From the root directory: 
+```
+./runTests
+```
+If the executable file does not work, you can run the tests with the command: 
+
+```
+pytest --cov-report term --cov=diffcapanalyzer tests/
+```
+
+
 ## Our Work Process:
 - [ ] Review other reactor model simulators: simple, complex, and industrial penicillin.
 - [ ] Decide what interface building tool to use: dash, bokeh, voila, or streamlit.
