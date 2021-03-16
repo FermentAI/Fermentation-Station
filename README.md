@@ -18,6 +18,7 @@ This dash app is useful for selecting different chemical reactor models and play
 - plotly [Dash](https://dash.plotly.com/installation)
 - [dash_core_components](https://pypi.org/project/dash-core-components/)
 - [dash_html_components](https://pypi.org/project/dash-html-components/)
+- [dash_bootstrap_components]()
 - plotly [express](https://pypi.org/project/plotly-express/)
 - [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
 
@@ -27,7 +28,18 @@ Clone this repository:
 ```sh
 https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
 ```
-
+Inside of the repository, run the setup.sh file:
+```sh
+bash setup.sh
+```
+Next, check for any errors. If there are, open an issue on github.
+```sh
+https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
+```
+If no errors arrise, launch the app.
+```sh
+bash launch.sh
+```
 
 ## User Checklist:
 - [ ] Choose a simple or complex model from the dropdown menu.
