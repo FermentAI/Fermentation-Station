@@ -7,7 +7,7 @@ This DASH app is useful for selecting different chemical reactor models and play
 \
 \
 \
-![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb-8d50-49954cff9bc9.png)
+![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb-8d50-49954cff9bc9.png)https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
 
 ## [Use cases](https://github.com/FermentAI/Reactor-Modeling-Sandbox/blob/main/rms/docs/use_cases.md#use-cases)
 
@@ -26,7 +26,7 @@ This DASH app is useful for selecting different chemical reactor models and play
 Clone this repository:
 
 ```sh
-https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
+git clone https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
 ```
 Inside of the repository, run the setup.sh file:
 ```sh
@@ -40,6 +40,14 @@ If no errors arise, launch the app.
 ```sh
 bash launch.sh
 ```
+## Dash App Tutorial:
+Once you have cloned the repository and installed the packages, the Dash app can be used to interact with different models to produce graphs of reactor variables. After launching the app, copy the URL to your browser. From there, you should see the interface:
+\
+\
+\
+![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb$
+
+The app loads a single chart without any lines or plots. From that point, you can choose a model from the dropdown menu at the top. Then, click add chart to produce multiple charts and select the chart type (line or bar) or variables you want to plot. Following this click the buttons above to see variables and manipulate their settings with the slider. Finally, rum simulation and see how the charts you added change according to you model and variable settings. Play around with it as much as you like.
 
 ## User Checklist:
 - [ ] Choose a simple or complex model from the dropdown menu.
@@ -51,7 +59,9 @@ bash launch.sh
 - [ ] Play around with the time feature to see your reactor's behavior at different time points.
 - [ ] Add more graphs or change the parameters and run another simulation.
 
-## Our Thought Process:
+## Running Tests:
+
+## Our Work Process:
 - [ ] Review other reactor model simulators: simple, complex, and industrial penicillin.
 - [ ] Decide what interface building tool to use: dash, bokeh, voila, or streamlit.
 - [ ] Design the models in separate files to simulate simple or complex reactors.
