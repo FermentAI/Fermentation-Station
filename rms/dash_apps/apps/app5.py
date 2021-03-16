@@ -56,27 +56,41 @@ def sliders_from_df(vars_df):
     sliders = []
     if vars_df is not None:
         for i,var in enumerate(vars_df.index):
-            if vars_df.loc[var,'Min'] is not False:
-                minval = vars_df.loc[var,'Min']
-            else:
-                minval = vars_df.loc[var,'Value']*0.1
+            try:
+                if vars_df.loc[var,'Min'] is not False:
+                    minval = vars_df.loc[var,'Min']
+                else:
+                    minval = vars_df.loc[var,'Value']*0.1
 
-            if vars_df.loc[var,'Max'] is not False:
-                maxval = vars_df.loc[var,'Max']
-            else:
-                maxval = vars_df.loc[var,'Value']*1.9
+                if vars_df.loc[var,'Max'] is not False:
+                    maxval = vars_df.loc[var,'Max']
+                else:
+                    maxval = vars_df.loc[var,'Value']*1.9
 
-            slider = dsc.NamedSlider(
-                        name= vars_df.loc[var,'Label'],
-                        id={'type':'dynamic-var',
-                            'index': var
-                        },
-                        min=minval,
-                        max=maxval,
-                        step=(maxval-minval)/100,
-                        value = vars_df.loc[var,'Value'],
-                        other = {'units':vars_df.loc[var,'Units']}
-                    )
+                slider = dsc.NamedSlider(
+                            name= vars_df.loc[var,'Label'],
+                            id={'type':'dynamic-var',
+                                'index': var
+                            },
+                            min=minval,
+                            max=maxval,
+                            step=(maxval-minval)/100,
+                            value = vars_df.loc[var,'Value'],
+                            other = {'units':vars_df.loc[var,'Units'],'type':'slider-input'}
+                        )
+            except:
+                try:
+                    other = {'units':vars_df.loc[var,'Units'],'type':'just-input'}
+                except:
+                    other = {'type':'just-input'}
+                slider = dsc.NamedSlider(
+                            name= vars_df.loc[var,'Label'],
+                            id={'type':'dynamic-var',
+                                'index': var
+                            },
+                            value = vars_df.loc[var,'Value'],
+                            other = other
+                        )
             sliders.append(slider)
     return sliders
 
@@ -115,20 +129,19 @@ content = html.Div(
             dbc.Col([
                 dbc.Row(dsc.collapse([], 'Manipulated Variables', 'mvars-collapse')),
                 dbc.Row(dsc.collapse([], 'Control Variables', 'cvars-collapse')),
-                # *dsc.collapse(inputs_from_df(mymparams), 'Model Parameters', 'mpars-collapse'),
-                # *dsc.collapse(inputs_from_df(mysparams), 'Simulation Settings', 'spars-collapse')
             ],
-                id = 'sliders2', width = 2),
+                id = 'slidersL', width = 2),
             dbc.Col([],id = 'diagram1', width = 6),
-            dbc.Col([],id = 'diagram2', width = 4)
+            dbc.Col([
+                dbc.Row(dsc.collapse([], 'Model Parameters', 'mparams-collapse')),
+                dbc.Row(dsc.collapse([], 'Simulation Settings', 'sparams-collapse')),
+            ],
+                id = 'slidersR', width = 4),
         ]),
 
         dbc.Row(run_btn),
         dbc.Row(plot_btn),
-        dbc.Row([
-            dbc.Col(id = 'container', children = [], width = 9),
-            dbc.Col(id = 'mvars4')
-        ]),
+        dbc.Row(id = 'container', children = []),
     ],
     id="page-content",
     style = CONTENT_STYLE
@@ -146,7 +159,7 @@ layout = html.Div(
 # callback to update the simulator with the selected model
 @app.callback(
     [Output("dd_models", "children")],
-    [Output(s+"-collapse", "children") for s in ['mvars','cvars']],#,'mparams','sparams']],,
+    [Output(s+"-collapse", "children") for s in ['mvars','cvars','mparams','sparams']],
     [Output('dummy-output-models','children')],
     [Output('diagram1','children')],
     [Input(m, "n_clicks") for m in model_names],
@@ -163,7 +176,7 @@ def update_simulator(*args):
 
     sim(model_names[new_pick])
 
-    return dropdown_models(new_pick), sliders_from_df(mymvars[~mymvars.State]), sliders_from_df(mycvars), [], diagram(mysim)
+    return dropdown_models(new_pick), sliders_from_df(mymvars[~mymvars.State]), *[sliders_from_df(p) for p in [mycvars, mymparams, mysparams]], [], diagram(mysim)
 
 # callback to update the model variables with the sliders / input box
 @app.callback(
@@ -175,16 +188,23 @@ def update_simulator(*args):
 def update_mvars_slider(inputs,sliders):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    print(len(inputs))
+    print(len(sliders))
 
     if button_id:
         if 'input' in button_id:
-            sliders = inputs
+            sliders = inputs[:len(sliders)]
         else:
-            inputs = sliders
+            inputs[:len(sliders)] = sliders
 
-        idx = len(mysim.model.mvars.from_input['Value']) # cheap but works
-        mysim.model.mvars.from_input['Value'].iloc[:] = sliders[:idx]
-        mysim.subroutines.subrvars.from_input['Value'].iloc[:] = sliders[idx:]
+        l1 = len(mysim.model.mvars.from_input['Value']) # cheap but works
+        l2 = len(mysim.subroutines.subrvars.from_input['Value'])+l1
+        l3 = len(mysim.model.params.from_input['Value'])+l2
+
+        mysim.model.mvars.from_input['Value'].iloc[:] = inputs[:l1]
+        mysim.subroutines.subrvars.from_input['Value'].iloc[:] = inputs[l1:l2]
+        mysim.model.params.from_input['Value'].iloc[:] = inputs[l2:l3]
+        mysim.simvars.from_input['Value'].iloc[:] = inputs[l3:]
 
     return inputs, sliders
 
@@ -262,8 +282,8 @@ def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
                     },
                     figure={}
                 ),
-            ]
-        )
+            ],
+        width = 4)
         div_children.append(new_child)
 
     elif button_id == 'dummy-output4':
@@ -299,7 +319,7 @@ def new_graph(var, chart_type, time_idx, old_fig):
                 fig = px.bar(x = var, y= data[var].iloc[time_idx], color=var, labels = {'y':'Value at {:.2f}'.format(data.index[time_idx]), 'x':'Variable', 'color':'Variable'})
             elif chart_type == 'line':
                 fig = px.line(data.iloc[:time_idx] , x = data.iloc[:time_idx].index, y = var, labels = {'x':'Time','value':'Value', 'variable':'Variable'})
-                            
+            fig.update_layout(legend_orientation='h')                
             # change labels
             labels = {v: pd.concat([mymvars,mycvars]).loc[v,'Label'] + ' (' + pd.concat([mymvars,mycvars]).loc[v,'Units'] +')' for v in var}
             for i, dat in enumerate(fig.data):
@@ -314,9 +334,9 @@ def new_graph(var, chart_type, time_idx, old_fig):
 
 # callback to collapse the different slider menus
 @app.callback(
-    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
-    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars']],#,'mparams','sparams']],
-    [State(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
+    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
+    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars','mparams','sparams']],
+    [State(s+"-collapse", "is_open") for s in ['mvars','cvars','mparams','sparams']],
 )
 def toggle_collapse(*args):
     are_open = list(args[int(len(args)/2):])
@@ -325,7 +345,7 @@ def toggle_collapse(*args):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
  
-    for i,n in enumerate(['mvars','cvars']):
+    for i,n in enumerate(['mvars','cvars','mparams','sparams']):
         if n in button_id:
             are_open[i] = not are_open[i]
 

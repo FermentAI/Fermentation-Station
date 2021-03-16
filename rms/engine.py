@@ -323,7 +323,9 @@ class Simulator(Caretaker):
         """
         self.model.mvars._update(self.model.mvars.from_input['Value'])
         if self.subroutines: self.subroutines.subrvars._update(self.subroutines.subrvars.from_input['Value'])
-
+        self.model.params._update(self.model.params.from_input['Value'])
+        self.simvars._update(self.simvars.from_input['Value'])
+        
     def run(self): #TODO: beautify
 
 
@@ -426,6 +428,7 @@ class Subroutine():
                 raise SubroutineError('Run into an issue with the subroutine at time {}'.format(t))
         
         self.model.update_mvars_from_dict(self.model_parameters)
+
 # this dsnt work
 # class RMS_Model(BioprocessModel):
 #     '''

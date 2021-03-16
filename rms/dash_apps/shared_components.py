@@ -52,14 +52,30 @@ sidebar_btn = dbc.Button(children = "<", outline=True, size = "sm", color="secon
 
 def NamedSlider(name, **kwargs):
     other = kwargs.pop('other')
-    slider = dcc.Slider(**copy.deepcopy(kwargs))
+
+    if other['type'] == 'slider-input':
+        slider = dcc.Slider(**copy.deepcopy(kwargs))
+    else:
+        slider = html.Div()
+
     kwargs['id']['type'] = kwargs['id']['type']+'-input'
-    input_field = dbc.Input(id=kwargs['id'], type="number", value = kwargs['value'], step = kwargs['step'])
+
+    try:
+        step = kwargs['step']
+    except:
+        step = None
+
+    input_field = dbc.Input(id=kwargs['id'], type="number", value = kwargs['value'], step = step)
+
+    try:
+        label = dbc.Label(f"{name}\n ({other['units']})", width=8)
+    except:
+        label = dbc.Label(f"{name})", width=8)
     return html.Div(
         children=[
             dbc.FormGroup(
             [
-                dbc.Label(f"{name}\n ({other['units']})", width=8),
+                label,
                 dbc.Col(input_field,width=4,
                 ),
             ],
@@ -96,6 +112,8 @@ def collapse(child, bttn_label, id):
             ),
         ]
 
+
+### scraps for math input
 '''
 from sympy import var, stats
 from sympy import sympify
