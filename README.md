@@ -3,11 +3,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/FermentAI/Reactor-Modeling-Sandbox/badge.svg)](https://coveralls.io/github/FermentAI/Reactor-Modeling-Sandbox)
 
 ## App for Dynamic Model Exploration and Data Visualization
-This dash app is useful for selecting different chemical reactor models and playing with reactor parameters, such as Coolant Flow Rate, Reactor Temperature, Concentration, and more. It visualizes data from these selections as time plots of different variables, based on the user's preferences. Differential equations are used in each model to represent the chemical reactions occurring in the reactor. Understanding the way a reactor performs based on how different variables are manipulated can help with the design of more complex reactors. Our hope is that this DASH app can be used as a teaching tool for those looking to understand how a reactor works and how to adjust different parameters to meet the expected reaction products.
+This DASH app is useful for selecting different chemical reactor models and playing with reactor parameters, such as Coolant Flow Rate, Reactor Temperature, Concentration, and more. It visualizes data from these selections as time plots of different variables, based on the user's preferences. Differential equations are used in each model to represent the chemical reactions occurring in the reactor. Understanding the way a reactor performs based on how different variables are manipulated can help with the design of more complex reactors. Our hope is that this DASH app can be used as a teaching tool for those looking to understand how a reactor works and how to adjust different parameters to meet the expected reaction products.
 \
 \
 \
-![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb-8d50-49954cff9bc9.png)
+![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb-8d50-49954cff9bc9.png)https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
 
 ## [Use cases](https://github.com/FermentAI/Reactor-Modeling-Sandbox/blob/main/rms/docs/use_cases.md#use-cases)
 
@@ -26,7 +26,7 @@ This dash app is useful for selecting different chemical reactor models and play
 Clone this repository:
 
 ```sh
-https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
+git clone https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
 ```
 Inside of the repository, run the setup.sh file:
 ```sh
@@ -36,10 +36,14 @@ Next, check for any errors. If there are, open an issue on github.
 ```sh
 https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
 ```
-If no errors arrise, launch the app.
+If no errors arise, launch the app.
 ```sh
 bash launch.sh
 ```
+## Dash App Tutorial:
+Once you have cloned the repository and installed the packages, the Dash app can be used to interact with different models to produce graphs of reactor variables. After launching the app, copy the URL to your browser. From there, you should see the interface.
+
+The app loads a single chart without any lines or plots. From that point, you can choose a model from the dropdown menu at the top. Then, click add chart to produce multiple charts and select the chart type (line or bar) or variables you want to plot. Following this click the buttons above to see variables and manipulate their settings with the slider. Finally, rum simulation and see how the charts you added change according to you model and variable settings. Play around with it as much as you like.
 
 ## User Checklist:
 - [ ] Choose a simple or complex model from the dropdown menu.
@@ -51,7 +55,65 @@ bash launch.sh
 - [ ] Play around with the time feature to see your reactor's behavior at different time points.
 - [ ] Add more graphs or change the parameters and run another simulation.
 
-## Our Thought Process:
+## Running Tests:
+
+## Code Structure
+```
+|   LICENSE
+|   README.md
+|   environment.yml
+|   setup.py
++---rms
+|   +---dash_apps
+|   |      __init__.py
+|   |      shared_callbacks.cpython-38.pyc
+|   |      shared_components.cpython-38.pyc
+|   |      shared_styles.cpython-38.pyc
+|   +---apps
+|   |      dummy.py
+|   |      main.py
+|   |      myapp.py
+|   +---shared_callbacks.py
+|   +---shared_components.py
+|   +---shared_styles.py
++---dash_main.py
++---docs
+|       components_RMS.svg
+|       landing_frontend_RMS.svg
+|       tech_review_RMS.pdf
+|       use_cases.md
+|
++---engine.py
++---models
+|   +---jckantor_complex
+|   |       controlled_vars.csv
+|   |       diagram.png
+|   |       manipulated_vars.csv
+|   |       model.py
+|   |       parameters.csv
+|   +---jckantor_simple
+|   |       manipulated_vars.csv
+|   |       model.py
+|   |       parameters.csv
+|   +---penicillin_goldrick_2017
+|   |       model.py
++---simulator_vars.csv
++---test.py
+```
+
+## Running Tests
+From the root directory: 
+```
+./runTests
+```
+If the executable file does not work, you can run the tests with the command: 
+
+```
+pytest --cov-report term --cov=diffcapanalyzer tests/
+```
+
+
+## Our Work Process:
 - [ ] Review other reactor model simulators: simple, complex, and industrial penicillin.
 - [ ] Decide what interface building tool to use: dash, bokeh, voila, or streamlit.
 - [ ] Design the models in separate files to simulate simple or complex reactors.
