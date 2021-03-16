@@ -302,8 +302,11 @@ class Simulator(Caretaker):
                 **kwds)
 
         # read settings
-        self.simvars = Vars(os.getcwd(), 'rms/simulator_vars.csv')
-
+        try:
+            self.simvars = Vars(os.getcwd(), 'rms/simulator_vars.csv')
+        except:
+            self.simvars = Vars(os.getcwd(), 'simulator_vars.csv')
+            
         self.model = model
 
         self.integrator = self.simvars.current.loc['integrator','Value']
