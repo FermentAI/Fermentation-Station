@@ -415,6 +415,7 @@ class Subroutine():
         """
         self.model_parameters = self.model.get_all_vars_dict(t)
         self.model_state = self.model.get_state_dict(t)
+        self.subroutine_vars = self.subrvars.get_all_vars_dict()
 
         all_methods = (getattr(self, name) for name in dir(self))
         self.exe_methods = filter(lambda x: not x.__name__.startswith('_') ,filter(inspect.ismethod,all_methods))

@@ -91,10 +91,10 @@ diagram = lambda simulator: dbc.Card(
 )
 
 # make a button to run the simulator
-run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run", n_clicks = 0)
+run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mb-3", id="btn_run", n_clicks = 0)
 
 # make a button for plots
-plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mr-1", id="btn_plot", n_clicks = 0)
+plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mb-3", id="btn_plot", n_clicks = 0)
 
 # layout all the components to be displayed
 content = html.Div(
@@ -151,7 +151,6 @@ layout = html.Div(
     [Output('diagram1','children')],
     [Input(m, "n_clicks") for m in model_names],
 )
-
 def update_simulator(*args):
     ctx = dash.callback_context
     # this gets the id of the button that triggered the callback
@@ -165,8 +164,6 @@ def update_simulator(*args):
     sim(model_names[new_pick])
 
     return dropdown_models(new_pick), sliders_from_df(mymvars[~mymvars.State]), sliders_from_df(mycvars), [], diagram(mysim)
-
-
 
 # callback to update the model variables with the sliders / input box
 @app.callback(
@@ -202,8 +199,7 @@ def run_simulation(n_clicks_run):
         mysim.set_inputs()
         data = mysim.run()
         mymvars = mysim.model.reset()
-        print('1')
-        print(mymvars)
+
     return
    
 # Takes the n-clicks of the add-chart button and the state of the container children.
@@ -219,9 +215,7 @@ def run_simulation(n_clicks_run):
 def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-    print(data.columns[data.columns.map(lambda x: '0' not in x)])
-    print('data')
-    print(mymvars)
+
     if button_id == 'dummy-output-models':
         div_children = []
 
@@ -294,7 +288,8 @@ def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
 )
 def new_graph(var, chart_type, time_idx, old_fig):
     ctx = dash.callback_context
-
+    global data
+    data = data.astype(float)
     if ctx.triggered[0]["prop_id"] != '.':
 
         if len(var) == 0:
@@ -306,7 +301,7 @@ def new_graph(var, chart_type, time_idx, old_fig):
                 fig = px.line(data.iloc[:time_idx] , x = data.iloc[:time_idx].index, y = var, labels = {'x':'Time','value':'Value', 'variable':'Variable'})
                             
             # change labels
-            labels = {v:mymvars.loc[v,'Label'] + ' (' + mymvars.loc[v,'Units'] +')' for v in var}
+            labels = {v: pd.concat([mymvars,mycvars]).loc[v,'Label'] + ' (' + pd.concat([mymvars,mycvars]).loc[v,'Units'] +')' for v in var}
             for i, dat in enumerate(fig.data):
                 for elem in dat:
                     if elem == 'name':
