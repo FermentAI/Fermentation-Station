@@ -2,6 +2,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
+
 from dash_apps.apps.myapp import app
 from dash_apps.apps import app5
 import dash_apps.shared_callbacks
@@ -21,7 +22,7 @@ app.layout = html.Div([
               Input('url', 'pathname'))
 def display_page(pathname):
     if pathname == '/':
-        return app5.layout
+        return app4.layout
     elif pathname == '/app2':
          return app5.layout
     else:

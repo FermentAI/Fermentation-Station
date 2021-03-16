@@ -1,6 +1,6 @@
 from dash_apps.apps.myapp import app
 from dash.dependencies import Input, Output, State
-from dash_apps.shared_styles import *
+from rms.dash_apps.shared_styles import *
 
 # Change Content Style
 @app.callback(
