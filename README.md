@@ -8,7 +8,7 @@ Here's an interactive tool to see how a chemical reactor works. You can play aro
 \
 ![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb-8d50-49954cff9bc9.png)
 
-## [Use cases](https://github.com/FermentAI/Fermentation-Station/blob/main/docs/use_cases.md#use-cases)
+## [Use cases](https://github.com/FermentAI/Reactor-Modeling-Sandbox/blob/main/rms/docs/use_cases.md#use-cases)
 ## User Checklist:
 - [ ] Choose a simple or complex model from the dropdown menu.
 - [ ] Use the slider to select your model parameters.
