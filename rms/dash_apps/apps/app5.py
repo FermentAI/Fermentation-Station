@@ -1,16 +1,15 @@
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-from dash_apps.shared_components import *
+from dash.dependencies import Input, Output, State, MATCH, ALL
+import dash_apps.shared_components as dsc
+from dash_apps.shared_styles import *
 from dash_apps.apps.myapp import app
 import dash
-import numpy as np
-from dash.dependencies import Input, Output, State, MATCH, ALL
-
 from engine import Model, Simulator
 import os
 import plotly.express as px
+import pandas as pd
 
 path = os.getcwd()
 # get all models in the models directory, skip penicilin
@@ -28,12 +27,25 @@ def sim(model_name):
     Arguments
     ---------
         model_name
-    """ 
-    simuluator = Simulator(model = Model(model_path(model_name)))
-    variables = simuluator.model.mvars.current
-    return simuluator, variables
+    """
+    global mysim, mymvars, mycvars, mymparams, mysparams, data
+    mysim = Simulator(model = Model(model_path(model_name)))
+    mymvars = mysim.model.mvars.default
+    try:
+        mycvars = mysim.subroutines.subrvars.default
+    except Exception as e:
+        print(e)
+        mycvars = None
 
-def mvars(vars_df):
+    mymparams = mysim.model.params.default
+    mysparams = mysim.simvars.default
+
+    mysim.set_inputs()
+    data = mysim.run()
+    mymvars = mysim.model.reset()
+    return 
+
+def sliders_from_df(vars_df):
     """
     Generates sliders based on the variables in a DataFrame
 
@@ -42,58 +54,81 @@ def mvars(vars_df):
         vars_df: Pandas DataFrame containing variables
     """ 
     sliders = []
-    for i,var in enumerate(vars_df.index):
-        if vars_df.loc[var,'Min'] is not False:
-            minval = vars_df.loc[var,'Min']
-        else:
-            minval = vars_df.loc[var,'Value']*0.1
+    if vars_df is not None:
+        for i,var in enumerate(vars_df.index):
+            if vars_df.loc[var,'Min'] is not False:
+                minval = vars_df.loc[var,'Min']
+            else:
+                minval = vars_df.loc[var,'Value']*0.1
 
-        if vars_df.loc[var,'Max'] is not False:
-            maxval = vars_df.loc[var,'Max']
-        else:
-            maxval = vars_df.loc[var,'Value']*1.9
+            if vars_df.loc[var,'Max'] is not False:
+                maxval = vars_df.loc[var,'Max']
+            else:
+                maxval = vars_df.loc[var,'Value']*1.9
 
-        slider = NamedSlider(
-                    name= vars_df.loc[var,'Label'],
-                    id={'type':'dynamic-var',
-                        'index': i
-                    },
-                    min=minval,
-                    max=maxval,
-                    step=(maxval-minval)/100,
-                    value = vars_df.loc[var,'Value'],
-                    other = {'units':vars_df.loc[var,'Units']}
-                )
-        sliders.append(slider)
+            slider = dsc.NamedSlider(
+                        name= vars_df.loc[var,'Label'],
+                        id={'type':'dynamic-var',
+                            'index': var
+                        },
+                        min=minval,
+                        max=maxval,
+                        step=(maxval-minval)/100,
+                        value = vars_df.loc[var,'Value'],
+                        other = {'units':vars_df.loc[var,'Units']}
+                    )
+            sliders.append(slider)
     return sliders
+
+# make a diagram, if any
+diagram = lambda simulator: dbc.Card(
+    [
+        dbc.CardImg(src=simulator.model.diagram, top=True, alt = 'Oh snap! No diagram for this model!'),
+        dbc.CardBody(
+            html.P(simulator.model.doc, className="card-text")
+        ),
+    ],
+)
 
 # make a button to run the simulator
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run", n_clicks = 0)
-plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mr-1", id="btn_plot", n_clicks = 0)
 
+# make a button for plots
+plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mr-1", id="btn_plot", n_clicks = 0)
 
 # layout all the components to be displayed
 content = html.Div(
     [
         dbc.Row([
-            dbc.Col([
+            dbc.Col(width = 9),
+            dbc.Col(
                 dbc.DropdownMenu(
                     label = "Select a model",
                     children = dropdown_models(0),
                     right=False,
                     id = 'dd_models'
                 ),
-                ],
             )
         ]),
-        dbc.Row(),
+
         dbc.Row([
-            dbc.Col(id = 'sliders', children = [], width = 2),
+            dbc.Col([
+                dbc.Row(dsc.collapse([], 'Manipulated Variables', 'mvars-collapse')),
+                dbc.Row(dsc.collapse([], 'Control Variables', 'cvars-collapse')),
+                # *dsc.collapse(inputs_from_df(mymparams), 'Model Parameters', 'mpars-collapse'),
+                # *dsc.collapse(inputs_from_df(mysparams), 'Simulation Settings', 'spars-collapse')
+            ],
+                id = 'sliders2', width = 2),
+            dbc.Col([],id = 'diagram1', width = 6),
+            dbc.Col([],id = 'diagram2', width = 4)
         ]),
+
         dbc.Row(run_btn),
         dbc.Row(plot_btn),
-        dbc.Row(id = 'container', children = []),
-        dbc.Row(id = 'mvars4')
+        dbc.Row([
+            dbc.Col(id = 'container', children = [], width = 9),
+            dbc.Col(id = 'mvars4')
+        ]),
     ],
     id="page-content",
     style = CONTENT_STYLE
@@ -110,9 +145,10 @@ layout = html.Div(
 
 # callback to update the simulator with the selected model
 @app.callback(
-    [Output("dd_models", "children"),
-    Output("sliders", "children"),
-    Output('dummy-output-models','children')],
+    [Output("dd_models", "children")],
+    [Output(s+"-collapse", "children") for s in ['mvars','cvars']],#,'mparams','sparams']],,
+    [Output('dummy-output-models','children')],
+    [Output('diagram1','children')],
     [Input(m, "n_clicks") for m in model_names],
 )
 
@@ -126,13 +162,10 @@ def update_simulator(*args):
     except:
         new_pick = 0
 
-    global mysim, mymvars, data
-    mysim, mymvars = sim(model_names[new_pick])
-    mysim.model.set_inputs()
-    data = mysim.run()
-    mymvars = mysim.model.reset()
+    sim(model_names[new_pick])
 
-    return dropdown_models(new_pick), mvars(mymvars[~mymvars.State]), []
+    return dropdown_models(new_pick), sliders_from_df(mymvars[~mymvars.State]), sliders_from_df(mycvars), [], diagram(mysim)
+
 
 
 # callback to update the model variables with the sliders / input box
@@ -142,7 +175,6 @@ def update_simulator(*args):
     [Input({'type': 'dynamic-var-input', 'index': ALL}, 'value'),
     Input({'type': 'dynamic-var', 'index': ALL}, 'value')]
 )
-
 def update_mvars_slider(inputs,sliders):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
@@ -152,7 +184,10 @@ def update_mvars_slider(inputs,sliders):
             sliders = inputs
         else:
             inputs = sliders
-        mysim.model.mvars.from_input['Value'].iloc[:] = sliders
+
+        idx = len(mysim.model.mvars.from_input['Value']) # cheap but works
+        mysim.model.mvars.from_input['Value'].iloc[:] = sliders[:idx]
+        mysim.subroutines.subrvars.from_input['Value'].iloc[:] = sliders[idx:]
 
     return inputs, sliders
 
@@ -162,11 +197,13 @@ def update_mvars_slider(inputs,sliders):
     Input('btn_run', 'n_clicks'),
 )
 def run_simulation(n_clicks_run):
-    if n_clicks_run > 0:
+    if n_clicks_run>0:
         global data, mymvars
-        mysim.model.set_inputs()
+        mysim.set_inputs()
         data = mysim.run()
         mymvars = mysim.model.reset()
+        print('1')
+        print(mymvars)
     return
    
 # Takes the n-clicks of the add-chart button and the state of the container children.
@@ -182,7 +219,9 @@ def run_simulation(n_clicks_run):
 def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
+    print(data.columns[data.columns.map(lambda x: '0' not in x)])
+    print('data')
+    print(mymvars)
     if button_id == 'dummy-output-models':
         div_children = []
 
@@ -204,7 +243,7 @@ def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
                         'type': 'dynamic-dpn-var1',
                         'index': n_clicks
                     },
-                    options=[{'label': mymvars.loc[var,'Label'] + ' ('+var+')', 'value': var} for var in data.columns[data.columns.map(lambda x: '0' not in x)]],
+                    options=[{'label': pd.concat([mymvars,mycvars]).loc[var,'Label'] + ' ('+var+')', 'value': var} for var in data.columns[data.columns.map(lambda x: '0' not in x)]],
                     multi=True,
                     value = [],
                     placeholder='Select variables to plot...',
@@ -278,4 +317,21 @@ def new_graph(var, chart_type, time_idx, old_fig):
     else:
         return old_fig
 
+# callback to collapse the different slider menus
+@app.callback(
+    [Output(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
+    [Input(s+"-collapse-button", "n_clicks") for s in ['mvars','cvars']],#,'mparams','sparams']],
+    [State(s+"-collapse", "is_open") for s in ['mvars','cvars']],#,'mparams','sparams']],
+)
+def toggle_collapse(*args):
+    are_open = list(args[int(len(args)/2):])
+    ns = list(args[:int(len(args)/2)])
 
+    ctx = dash.callback_context
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+ 
+    for i,n in enumerate(['mvars','cvars']):
+        if n in button_id:
+            are_open[i] = not are_open[i]
+
+    return are_open

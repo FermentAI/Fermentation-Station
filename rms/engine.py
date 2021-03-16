@@ -138,13 +138,6 @@ class Model():
         #if hard is False: self.mvars._update(current)
         return self.mvars.current
 
-    def set_inputs(self):
-        """
-        Sets the current variables to their input value.
-
-        """
-        self.mvars._update(self.mvars.from_input['Value'])
-
     def __import_module(self):
         """
         Dynamic import of modules.
@@ -323,6 +316,13 @@ class Simulator(Caretaker):
             self.subroutines = model.subroutine_class(model, self)
         else:
             self.subroutines = None
+    def set_inputs(self):
+        """
+        Sets the current variables to their input value.
+
+        """
+        self.model.mvars._update(self.model.mvars.from_input['Value'])
+        if self.subroutines: self.subroutines.subrvars._update(self.subroutines.subrvars.from_input['Value'])
 
     def run(self): #TODO: beautify
 
@@ -367,7 +367,7 @@ class Simulator(Caretaker):
 
             self.model.update_mvars_from_dict(state, also_IC = True)
 
-        return mdata
+        return mdata.join(cdata)
 
 class Subroutine():
     """
