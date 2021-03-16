@@ -64,7 +64,7 @@ def test_rms_dash():
         import dash_html_components as html
         from dash.dependencies import Input, Output
         import dash_bootstrap_components as dbc
-        from dash_apps.apps import app5
+        from dash_apps.apps import main
         import dash_apps.shared_callbacks
         from dash_apps.shared_components import navbar, sidebar, sidebar_btn
 
@@ -73,7 +73,7 @@ def test_rms_dash():
             navbar,
             sidebar,
             sidebar_btn,
-            html.Div(id='page', children = app5.layout)
+            html.Div(id='page', children = main.layout)
         ])
 
         ok = True; er = 'all good'
