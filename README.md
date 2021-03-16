@@ -10,13 +10,24 @@ Here's an interactive tool to see how a chemical reactor works. You can play aro
 
 ## [Use cases](https://github.com/FermentAI/Reactor-Modeling-Sandbox/blob/main/rms/docs/use_cases.md#use-cases)
 
-## App for Reactor Modeling Simulated Data Visualization
+## App for Simulated Reactor Model Data Visualization
 This dash app is useful for selecting different chemical reactor models and playing with reactor parameters, such as Coolant Flow Rate, Reactor Temperature, Concentration, and more. It visualizes data from these selections as time plots of different variables, based on the user's preferences. Differential equations are used in each model to represent the chemical reactions occurring in the reactor. Understanding the way a reactor performs based on how different variables are manipulated can help with the design of more complex reactors. Our hope is that this DASH app can be used as a teaching tool for those looking to understand how a reactor works and how to adjust different parameters to meet the expected reaction products.
 
 ## Software Dependencies
 - Python3
 - plotly [Dash](https://dash.plotly.com/installation)
-- 
+- [dash_core_components](https://pypi.org/project/dash-core-components/)
+- [dash_html_components](https://pypi.org/project/dash-html-components/)
+- plotly [express](https://pypi.org/project/plotly-express/)
+- [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
+
+## How to Install
+Clone this repository:
+
+```sh
+https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
+```
+
 
 ## User Checklist:
 - [ ] Choose a simple or complex model from the dropdown menu.
