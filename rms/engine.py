@@ -106,10 +106,10 @@ class Model():
                 Path poiting to a specific model directory.
         """
         self.path = model_path
+        self.model_class = self.get_model()
         self.params = Vars(self.path, 'parameters.csv')
         self.mvars = Vars(self.path, 'manipulated_vars.csv')
         self.initial_values_dict = self.get_state_dict()
-        self.model_class = self.get_model()
         self.subroutine_class = self.get_subroutine()
         self.doc = self.model_class.rhs.__doc__
         self.diagram = self.get_diagram()
@@ -165,8 +165,11 @@ class Model():
         """
         try:
             return self.__import_module().MyModel
-        except Exception:
-            raise ModelDefinitionError('Need to define the class "MyModel" in the corresponding model file.')
+        except Exception as e:
+            if isinstance(e, FileNotFoundError):
+                raise e
+            else:
+                raise ModelDefinitionError('Need to define the class "MyModel" in the corresponding model file.')
 
     def get_subroutine(self):
         """
