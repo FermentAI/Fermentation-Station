@@ -36,9 +36,8 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dcc.Link("Test 1", href="/"),
-                dcc.Link("Model 2", href='/app2'),
-                dcc.Link("Check 3", href="/app2"),
+                dcc.Link("Explore", href="/"),
+                dcc.Link("Test Navigation", href='/test'),
             ],
             vertical=True,
             pills=True,
