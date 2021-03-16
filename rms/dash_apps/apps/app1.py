@@ -18,16 +18,16 @@ models = [os.path.join(path,'rms','models', o) for o in sorted(os.listdir(os.pat
 sim = Simulator(model = Model(models[0]))
 
 lol = sim.model.mvars.default
-mvars = [NamedSlider(
-            name= lol.loc[var,'Label'],
-            id="slider-"+var,
-            min=0,
-            max=500,
-            step=100,
-            value = lol.loc[var,'Value'],
-            other = {'units':lol.loc[var,'Units']}
-            )
-     for var in lol.index]
+# mvars = [NamedSlider(
+#             name= lol.loc[var,'Label'],
+#             id="slider-"+var,
+#             min=0,
+#             max=500,
+#             step=100,
+#             value = lol.loc[var,'Value'],
+#             other = {'units':lol.loc[var,'Units']}
+#             )
+#      for var in lol.index]
 
 run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
 sim_plot = dcc.Graph(id = 'sim_plot')

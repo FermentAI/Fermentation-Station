@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 from dash_apps.apps.myapp import app
-from dash_apps.apps import app5, app2
+from dash_apps.apps import app5
 import dash_apps.shared_callbacks
 from dash_apps.shared_components import navbar, sidebar, sidebar_btn
 
@@ -23,7 +23,7 @@ def display_page(pathname):
     if pathname == '/':
         return app5.layout
     elif pathname == '/app2':
-         return app2.layout
+         return app5.layout
     else:
         return dbc.Jumbotron(
         [

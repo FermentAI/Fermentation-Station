@@ -41,38 +41,38 @@ def sim(model_name):
     mysparams = mysim.simvars.default
     return 
 
-def sliders_from_df(vars_df):
-    """
-    Generates sliders based on the variables in a DataFrame
+# def sliders_from_df(vars_df):
+#     """
+#     Generates sliders based on the variables in a DataFrame
 
-    Arguments
-    ---------
-        vars_df: Pandas DataFrame containing variables
-    """
-    if vars_df is None: return
-    sliders = []
-    for var in vars_df.index:
-        if vars_df.loc[var,'Min'] is not False:
-            minval = vars_df.loc[var,'Min']
-        else:
-            minval = vars_df.loc[var,'Value']*0.1
+#     Arguments
+#     ---------
+#         vars_df: Pandas DataFrame containing variables
+#     """
+#     if vars_df is None: return
+#     sliders = []
+#     for var in vars_df.index:
+#         if vars_df.loc[var,'Min'] is not False:
+#             minval = vars_df.loc[var,'Min']
+#         else:
+#             minval = vars_df.loc[var,'Value']*0.1
 
-        if vars_df.loc[var,'Max'] is not False:
-            maxval = vars_df.loc[var,'Max']
-        else:
-            maxval = vars_df.loc[var,'Value']*1.9
+#         if vars_df.loc[var,'Max'] is not False:
+#             maxval = vars_df.loc[var,'Max']
+#         else:
+#             maxval = vars_df.loc[var,'Value']*1.9
 
-        slider = dsc.NamedSlider(
-                    name= vars_df.loc[var,'Label'],
-                    id="slider-"+var,
-                    min=minval,
-                    max=maxval,
-                    step=(maxval-minval)/100,
-                    value = vars_df.loc[var,'Value'],
-                    other = {'units':vars_df.loc[var,'Units']}
-                )
-        sliders.append(slider)
-    return sliders
+#         slider = dsc.NamedSlider(
+#                     name= vars_df.loc[var,'Label'],
+#                     id="slider-"+var,
+#                     min=minval,
+#                     max=maxval,
+#                     step=(maxval-minval)/100,
+#                     value = vars_df.loc[var,'Value'],
+#                     other = {'units':vars_df.loc[var,'Units']}
+#                 )
+#         sliders.append(slider)
+#     return sliders
 
 # default to the first model 
 sim(model_names[0])

@@ -1,5 +1,4 @@
 from dash_apps.apps.myapp import app
-from dash_apps.apps import app1, app2
 from dash.dependencies import Input, Output, State
 from dash_apps.shared_styles import *
 

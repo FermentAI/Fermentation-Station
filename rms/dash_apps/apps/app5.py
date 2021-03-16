@@ -6,14 +6,11 @@ from dash_apps.shared_components import *
 from dash_apps.apps.myapp import app
 import dash
 import numpy as np
-import pandas as pd
 from dash.dependencies import Input, Output, State, MATCH, ALL
 
 from engine import Model, Simulator
 import os
 import plotly.express as px
-
-#for column names data[]
 
 path = os.getcwd()
 # get all models in the models directory, skip penicilin
@@ -33,7 +30,7 @@ def sim(model_name):
         model_name
     """ 
     simuluator = Simulator(model = Model(model_path(model_name)))
-    variables = simuluator.model.mvars.default
+    variables = simuluator.model.mvars.current
     return simuluator, variables
 
 def mvars(vars_df):
@@ -45,7 +42,7 @@ def mvars(vars_df):
         vars_df: Pandas DataFrame containing variables
     """ 
     sliders = []
-    for var in vars_df.index:
+    for i,var in enumerate(vars_df.index):
         if vars_df.loc[var,'Min'] is not False:
             minval = vars_df.loc[var,'Min']
         else:
@@ -58,7 +55,9 @@ def mvars(vars_df):
 
         slider = NamedSlider(
                     name= vars_df.loc[var,'Label'],
-                    id="slider-"+var,
+                    id={'type':'dynamic-var',
+                        'index': i
+                    },
                     min=minval,
                     max=maxval,
                     step=(maxval-minval)/100,
@@ -68,11 +67,8 @@ def mvars(vars_df):
         sliders.append(slider)
     return sliders
 
-# default to the first model 
-mysim, myvars = sim(model_names[0])
-
 # make a button to run the simulator
-run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run")
+run_btn = dbc.Button(children = "Run Simulation", outline=True, size = "lg", color="primary", className="mr-1", id="btn_run", n_clicks = 0)
 plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="primary", className="mr-1", id="btn_plot", n_clicks = 0)
 
 
@@ -92,7 +88,7 @@ content = html.Div(
         ]),
         dbc.Row(),
         dbc.Row([
-            dbc.Col(id = 'sliders', children = mvars(myvars), width = 2),
+            dbc.Col(id = 'sliders', children = [], width = 2),
         ]),
         dbc.Row(run_btn),
         dbc.Row(plot_btn),
@@ -107,19 +103,20 @@ content = html.Div(
 layout = html.Div(
     [
         content,
-        html.Div(id='dummy-output4')
+        html.Div(id='dummy-output4'),
+        html.Div(id='dummy-output-models')
     ],
 )
-
 
 # callback to update the simulator with the selected model
 @app.callback(
     [Output("dd_models", "children"),
-    Output("sliders", "children")],
+    Output("sliders", "children"),
+    Output('dummy-output-models','children')],
     [Input(m, "n_clicks") for m in model_names],
 )
 
-def update_label(*args):
+def update_simulator(*args):
     ctx = dash.callback_context
     # this gets the id of the button that triggered the callback
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
@@ -128,183 +125,157 @@ def update_label(*args):
         new_pick = model_names.index(button_id)
     except:
         new_pick = 0
-        
-    global mysim, myvars
-    mysim, myvars = sim(model_names[new_pick])
-    return dropdown_models(new_pick), mvars(myvars)
+
+    global mysim, mymvars, data
+    mysim, mymvars = sim(model_names[new_pick])
+    mysim.model.set_inputs()
+    data = mysim.run()
+    mymvars = mysim.model.reset()
+
+    return dropdown_models(new_pick), mvars(mymvars[~mymvars.State]), []
 
 
 # callback to update the model variables with the sliders / input box
 @app.callback(
-    [Output('slider-'+var+'-input', 'value') for var in myvars.index],
-    [Output('slider-'+var, 'value') for var in myvars.index],
-    [Input('slider-'+var+'-input', 'value') for var in myvars.index],
-    [Input('slider-'+var, 'value') for var in myvars.index])
+    [Output({'type': 'dynamic-var-input', 'index': ALL}, 'value'),
+    Output({'type': 'dynamic-var', 'index': ALL}, 'value')],
+    [Input({'type': 'dynamic-var-input', 'index': ALL}, 'value'),
+    Input({'type': 'dynamic-var', 'index': ALL}, 'value')]
+)
 
-def update_mvars_slider(*args):
-    sliders = list(args[int(len(args)/2):])
-    inputs = list(args[:int(len(args)/2)])
-
+def update_mvars_slider(inputs,sliders):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-    for i,var in enumerate(myvars.index):
+    if button_id:
         if 'input' in button_id:
-            sliders[i] = inputs[i]
+            sliders = inputs
         else:
-            inputs[i] = sliders[i]
-        mysim.model.mvars.current.loc[var, 'Value'] = sliders[i]
+            inputs = sliders
+        mysim.model.mvars.from_input['Value'].iloc[:] = sliders
 
-    return (*inputs, *sliders)
+    return inputs, sliders
 
 # callback to run the simulator and display data when the button is clicked
 @app.callback(
-    Output('btn_plot','n_clicks'),
-    [
-        Input('btn_run', 'n_clicks'),
-        Input('btn_plot', 'n_clicks')
-    ],
+    Output('dummy-output4','children'),
+    Input('btn_run', 'n_clicks'),
 )
-
-def update_figure(n_clicks_run, n_clicks_plot):
-    global data
-    data = mysim.run()
-    mysim.model.reset()
-    return n_clicks_plot
-
-        
+def run_simulation(n_clicks_run):
+    if n_clicks_run > 0:
+        global data, mymvars
+        mysim.model.set_inputs()
+        data = mysim.run()
+        mymvars = mysim.model.reset()
+    return
+   
 # Takes the n-clicks of the add-chart button and the state of the container children.
 @app.callback(
    Output('container','children'),
-   Input('btn_plot','n_clicks'),
-   State('container','children')
+   [Input('btn_plot','n_clicks'),
+   Input('dummy-output4','children'),
+   Input('dummy-output-models','children')],
+   [State('btn_run','n_clicks'),
+   State('container','children')]
 )
-
 #This function is triggered when the add-chart clicks changes. This function is not triggered by changes in the state of the container. If children changes, state saves the change in the callback.
-def display_graphs(n_clicks, div_children):
-    new_child = dbc.Col(
-#        style={'width'='4','display':'inline-block','outline':'thin lightgrey solid'},
-        children=[
-            dcc.Graph(
-                id={
-                    'type':'dynamic-graph',
-                    'index':n_clicks
-                },
-                figure={}
-            ),
-            dcc.RadioItems(
-                id={'type':'dynamic-choice',
-                    'index':n_clicks
-                },
-                options=[{'label':'Bar Chart', 'value': 'bar'},
-                         {'label': 'Line Chart', 'value': 'line'},
-                         {'label': 'Scatter Chart', 'value':'scatter'}],
-#                         {'label': 'Pie Chart', 'value':'pie'}],
-                value='line',
-            ),
-            dcc.Dropdown(
-                id={
-                    'type': 'dynamic-dpn-var1',
-                    'index': n_clicks
-                },
-                options=[{'label': var, 'value': var} for var in data.columns.values.tolist()],
-                multi=True,
-                value=["T","C"],
-                clearable=False
-            ),
-            dcc.Dropdown(
-                id={
-                    'type': 'dynamic-dpn-var2',
-                    'index': n_clicks
-                },
-                options=[{'label': var, 'value': var} for var in data.columns.values.tolist()],
-                multi=True,
-                value=["C","T"],
-                clearable=False
-            )
-        ]
-    )
-    div_children.append(new_child)
+def display_graphs(n_clicks, dummy,dummy_models, n_run, div_children):
+    ctx = dash.callback_context
+    button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if button_id == 'dummy-output-models':
+        div_children = []
+
+    elif button_id == 'btn_plot' or (n_clicks == 0 and n_run == 0):
+        new_child = dbc.Col(
+            children=[
+                dbc.Row([
+                dbc.Col(dbc.RadioItems(
+                    id={'type':'dynamic-choice',
+                        'index':n_clicks
+                    },
+                    options=[{'label': 'Line Chart', 'value': 'line'},
+                            {'label':'Bar Chart', 'value': 'bar'}
+                            ],
+                    value='line',
+                ), width = 2),
+                dbc.Col(dcc.Dropdown(
+                    id={
+                        'type': 'dynamic-dpn-var1',
+                        'index': n_clicks
+                    },
+                    options=[{'label': mymvars.loc[var,'Label'] + ' ('+var+')', 'value': var} for var in data.columns[data.columns.map(lambda x: '0' not in x)]],
+                    multi=True,
+                    value = [],
+                    placeholder='Select variables to plot...',
+                    clearable=False
+                ), width = 8),
+                dbc.Col([
+                    dbc.Label('Time'),
+                    dcc.Slider(
+                    id={'type':'dynamic-slider',
+                        'index':n_clicks
+                    },
+                    min=1,
+                    max=len(mysim.time)-1,
+                    step=1,
+                    value=len(mysim.time)-1,
+                )], width = 2),
+                ]),
+                dcc.Graph(
+                    id={
+                        'type':'dynamic-graph',
+                        'index':n_clicks
+                    },
+                    figure={}
+                ),
+            ]
+        )
+        div_children.append(new_child)
+
+    elif button_id == 'dummy-output4':
+        for c,child in enumerate(div_children):
+            try:
+                for l,line in enumerate(child['props']['children'][1]['props']['figure']['data']):
+                    old_data = div_children[c]['props']['children'][1]['props']['figure']['data'][l]['y']
+                    var = div_children[c]['props']['children'][1]['props']['figure']['data'][l]['legendgroup']
+                    div_children[c]['props']['children'][1]['props']['figure']['data'][l]['y'] = data[var].iloc[:len(old_data)].tolist()
+            except:
+                pass
+
     return div_children
 
-
-
-# callback to update the graphs with the selected variables and graph types. Input MATCH triggers the update_graph when the user changes the index. The output index will match the input index. A figure is returned in the output, given the dynamic-graph type chosen.
+# callback to update the graphs with the selected variables and graph types
 @app.callback(
-    Output({'type': 'dynamic-graph', 'index':MATCH}, 'figure'),
+    Output({'type': 'dynamic-graph', 'index': MATCH}, 'figure'),
     [Input(component_id={'type': 'dynamic-dpn-var1', 'index': MATCH}, component_property='value'),
-     Input(component_id={'type': 'dynamic-dpn-var2', 'index': MATCH}, component_property='value'),
-     Input(component_id={'type': 'dynamic-choice', 'index': MATCH}, component_property='value')]
+     Input(component_id={'type': 'dynamic-choice', 'index': MATCH}, component_property='value'),
+     Input(component_id={'type': 'dynamic-slider', 'index': MATCH}, component_property='value')],
+     State({'type': 'dynamic-graph', 'index': MATCH}, 'figure')
 )
+def new_graph(var, chart_type, time_idx, old_fig):
+    ctx = dash.callback_context
 
-# 
-def update_graph(var_1, var_2, chart_type):
-    print(var_1)
-#    new_df = data[data[0].isin(var_1)]
-    new_df = data.reset_index()
-    if chart_type == 'bar':
-        new_df = new_df.groupby(['index'])[[var_2]]
-#        new_df = new_df.groupby([var_1], as_index=False)[data.iloc[0]],
-        fig = px.bar(new_df, x = var_2, y=var_1),
-        return fig
-    elif chart_type == 'line':
-        if len(var_1) == 0:
-            return {}
+    if ctx.triggered[0]["prop_id"] != '.':
+
+        if len(var) == 0:
+            fig = old_fig
         else:
-            new_df = new_df.groupby('index')
-#            new_df = new_df.groupby([var_1, 'Time'], as_index=False)[data.iloc[0]]
-            fig = px.line(new_df, x=var_1, y=var_2),
-            return fig
-    elif chart_type == 'scatter':
-        new_df = new_df.groupby('index')
-        fig = px.scatter(new_df, x=var_1, y=var_2),
+            if chart_type == 'bar':
+                fig = px.bar(x = var, y= data[var].iloc[time_idx], color=var, labels = {'y':'Value at {:.2f}'.format(data.index[time_idx]), 'x':'Variable', 'color':'Variable'})
+            elif chart_type == 'line':
+                fig = px.line(data.iloc[:time_idx] , x = data.iloc[:time_idx].index, y = var, labels = {'x':'Time','value':'Value', 'variable':'Variable'})
+                            
+            # change labels
+            labels = {v:mymvars.loc[v,'Label'] + ' (' + mymvars.loc[v,'Units'] +')' for v in var}
+            for i, dat in enumerate(fig.data):
+                for elem in dat:
+                    if elem == 'name':
+                        fig.data[i].name = labels[fig.data[i].name]
+
         return fig
-#    elif chart_type == 'pie':
-#        fig = px.pie(new_df, names=[var_1,var_2], values=[var_1,var_2])
-#        return fig
 
+    else:
+        return old_fig
 
-# # callback to update the simulator with the selected model
-# @app.callback(
-#     [Output("dd_models", "children"),
-#     Output("sliders", "children")],
-#     [Input(m, "n_clicks") for m in model_names],
-# )
-# def update_label(*args):
-#     ctx = dash.callback_context
-#     # this gets the id of the button that triggered the callback
-#     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-#     try:
-#         new_pick = model_names.index(button_id)
-#     except:
-#         new_pick = 0
-        
-#     global mysim, myvars
-#     mysim, myvars = sim(model_names[new_pick])
-#     return dropdown_models(new_pick), mvars(myvars)
-
-
-# # callback to update the model variables with the sliders / input box
-# @app.callback(
-#     [Output('slider-'+var+'-input', 'value') for var in myvars.index],
-#     [Output('slider-'+var, 'value') for var in myvars.index],
-#     [Input('slider-'+var+'-input', 'value') for var in myvars.index],
-#     [Input('slider-'+var, 'value') for var in myvars.index])
-
-# def update_mvars_slider(*args):
-#     sliders = list(args[int(len(args)/2):])
-#     inputs = list(args[:int(len(args)/2)])
-
-#     ctx = dash.callback_context
-#     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-#     for i,var in enumerate(myvars.index):
-#         if 'input' in button_id:
-#             sliders[i] = inputs[i]
-#         else:
-#             inputs[i] = sliders[i]
-#         mysim.model.mvars.current.loc[var, 'Value'] = sliders[i]
-
-#     return (*inputs, *sliders)
 

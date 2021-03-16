@@ -34,7 +34,8 @@ class Vars():
         self.path = path
         self.var_file = var_file
         self.default = self.read_vars()
-        self.current = self.default
+        self.from_input = self.default.copy(True) 
+        self.current = self.default.copy(True)
         self.REQUIRED = ['parameters.csv','manipulated_vars.csv','simulator_vars.csv', 'controlled_vars.csv']
 
     def _update(self, pd:pd.DataFrame):
@@ -114,11 +115,18 @@ class Model():
         self.diagram = self.get_diagram()
         self.reset()
 
-    def reset(self):
+    def reset(self, hard = False):
         """
-        Sets the current manipulated variables to their default value.
+        Sets the current variables to their original value.
+        If "hard", set the variables to the default values, otherwise to the current
+
+        Arguments
+        ---------
+            hard : boolean
+                Set the variables to the default values. Default is False
         """
         # back to default
+        #current = self.mvars.current['Value'].copy(True)
         self.mvars.current = self.mvars.default.copy(True)
         # add rows to keep track of state
         self.state = self.mvars.current[self.mvars.current.State].copy(True)
@@ -127,7 +135,15 @@ class Model():
         self.state.Label = self.state.Label.map(lambda x: str(x)[8:])
         self.mvars.current = self.mvars.current.append(self.state)
         self.state = self.get_state_dict()
+        #if hard is False: self.mvars._update(current)
+        return self.mvars.current
 
+    def set_inputs(self):
+        """
+        Sets the current variables to their input value.
+
+        """
+        self.mvars._update(self.mvars.from_input['Value'])
 
     def __import_module(self):
         """

@@ -2,6 +2,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash_apps.shared_styles import *
+import copy
 
 # https://stackoverflow.com/questions/62732631/how-to-collapsed-sidebar-in-dash-plotly-dash-bootstrap-components
 navbar = dbc.NavbarSimple(
@@ -51,19 +52,20 @@ sidebar_btn = dbc.Button(children = "<", outline=True, size = "sm", color="secon
 
 def NamedSlider(name, **kwargs):
     other = kwargs.pop('other')
+    slider = dcc.Slider(**copy.deepcopy(kwargs))
+    kwargs['id']['type'] = kwargs['id']['type']+'-input'
+    input_field = dbc.Input(id=kwargs['id'], type="number", value = kwargs['value'], step = kwargs['step'])
     return html.Div(
         children=[
             dbc.FormGroup(
             [
                 dbc.Label(f"{name}\n ({other['units']})", width=8),
-                dbc.Col(
-                    dbc.Input(id=kwargs['id']+'-input', type="number", value = kwargs['value'], step = kwargs['step']),
-                    width=4,
+                dbc.Col(input_field,width=4,
                 ),
             ],
             row=True,
         ),
-        dcc.Slider(**kwargs),
+        slider,
         ],
     )
 
