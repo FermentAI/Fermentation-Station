@@ -57,7 +57,7 @@ The app loads a single chart without any lines or plots. From that point, you ca
 
 ## Running Tests:
 
-## Code Workflow
+## Code Structure
 ```
 |   LICENSE
 |   README.md
