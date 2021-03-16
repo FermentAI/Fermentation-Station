@@ -2,8 +2,7 @@
 [![Build Status](https://www.travis-ci.com/FermentAI/Reactor-Modeling-Sandbox.svg?branch=main)](https://www.travis-ci.com/github/FermentAI/Reactor-Modeling-Sandbox)
 [![Coverage Status](https://coveralls.io/repos/github/FermentAI/Reactor-Modeling-Sandbox/badge.svg)](https://coveralls.io/github/FermentAI/Reactor-Modeling-Sandbox)
 
-Here's an interactive tool to see how chemical reaction processes looks on a large scale. You can make predictions reactor outputs based on online measurements.
-Check to see if your system's environment controls are working and test the efficiency of your machine.
+Here's an interactive tool to see how a chemical reactor works. You can play around with the inputs to see how they affect your reactor's outputs. Variables can be visualized on as many graphs as you want.
 \
 \
 \
@@ -12,24 +11,35 @@ Source: http://www.industrialpenicillinsimulation.com
 
 ## [Use cases](https://github.com/FermentAI/Fermentation-Station/blob/main/docs/use_cases.md#use-cases)
 ## User Checklist:
-- [ ] Decide between advanced preferences to create a model or choose a simple model.
-- [ ] Check the model and differential equations that you want.
-- [ ] Check your parameters and any addtional settings.
-- [ ] Check for data compatibility with the model; user input should align with the simulation output variables.
-- [ ] Before the run, specify the input as a constant value or function
-- [ ] Before the run, specify how many simulations you want to run
-- [ ] Before the run, specify your control and variable parameters
-- [ ] Run your simulation.
-- [ ] Open a window that helps you select different output variables and use those to generate plots.
-- [ ] Export the plots and/or raw data.
+- [ ] Choose a simple or complex model from the dropdown menu.
+- [ ] Use the slider to select your model parameters.
+- [ ] Click the button to run your simulation.
+- [ ] Click the button to add charts.
+- [ ] Select the variables you want to plot from the dropdown menu.
+- [ ] Select the type of chart you want to visualize your data.
+- [ ] Play around with the time feature to see your reactor's behavior at different time points.
+- [ ] Add more graphs or change the parameters and run another simulation.
 
-## Quick TO-DO list:
-- [ ] get matlab model to run on python (better start with other models)
-- [ ] figure out scheme to wrap the model around, so then is easy to change the backend and update the frontend (pyFOOMB)
-- [ ] set up frontend in a model-agnostic way
-- [ ] widgets or dashboard to change inputs and visualize outputs? (Dash)
+## Our Thought Process:
+- [ ] Review other reactor model simulators: simple, complex, and industrial penicillin.
+- [ ] Decide what interface building tool to use: dash, bokeh, voila, or streamlit.
+- [ ] Design the models in separate files to simulate simple or complex reactors.
+- [ ] Assign initial input values to manipulated or constant variables.
+- [ ] Prepare a dash interface to visualize a graph of different parameters after running the simulation.
+- [ ] Create sliders for the user to select values for each parameter.
+- [ ] Create a simulate button for the user to interact with and initiate the graph display.
+- [ ] Create a dropdown for the user to select different models.
+- [ ] Design callbacks to relate the model selection to their respective model files.
+- [ ] Create an "Add chart" button to add any number of charts as a line or bar graph.
+- [ ] Create a dropdown to select a variable to plot.
+- [ ] Design callbacks to relate the variable selections to the appropriate variables output from the simulation.
+- [ ] Combine the model selection feature with the "Add Chart" button, chart style, and Variable dropdown features.
+- [ ] Add a time element to allow the user to slide through different time points on each graph.
 
 ## Future Works:
+- Make it possible for the user to download charts and raw data from each simulation.
+- Create a way for the user to add their own reactor model with its own differential equations.
+- Allow the user to see graphs change in real time with the simulation and manipulating input variables.
 - Data-driven vs model-driven? Maybe you only have data and want to create an ML model for the fermentation process, completely substituting ODEs.
 - Allow the user to include their bioreactor build in the simulation and distinguish if parts are broken.
 
