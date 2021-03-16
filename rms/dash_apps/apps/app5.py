@@ -114,7 +114,10 @@ plot_btn = dbc.Button(children = "Add Chart", outline=True, size = "lg", color="
 content = html.Div(
     [
         dbc.Row([
-            dbc.Col(width = 9),
+            dbc.Col(html.H1(children='Reactor Modeling Sandbox'), width = 9),
+        ]),
+        dbc.Row([
+            dbc.Col(html.H5(children='Beep bop'), width = 9),
             dbc.Col(
                 dbc.DropdownMenu(
                     label = "Select a model",
@@ -124,14 +127,18 @@ content = html.Div(
                 ),
             )
         ]),
-
         dbc.Row([
-            dbc.Col([
+            dbc.Col(html.H1(children=''), width = 12),
+        ]),
+        dbc.Row([
+            dbc.Col(dbc.Col([
                 dbc.Row(dsc.collapse([], 'Manipulated Variables', 'mvars-collapse')),
                 dbc.Row(dsc.collapse([], 'Control Variables', 'cvars-collapse')),
             ],
-                id = 'slidersL', width = 2),
+                id = 'slidersL'),width = 2),
+
             dbc.Col([],id = 'diagram1', width = 6),
+
             dbc.Col([
                 dbc.Row(dsc.collapse([], 'Model Parameters', 'mparams-collapse')),
                 dbc.Row(dsc.collapse([], 'Simulation Settings', 'sparams-collapse')),
@@ -139,8 +146,8 @@ content = html.Div(
                 id = 'slidersR', width = 4),
         ]),
 
-        dbc.Row(run_btn),
-        dbc.Row(plot_btn),
+        dbc.Row(dbc.Col(run_btn)),
+        dbc.Row(dbc.Col(plot_btn)),
         dbc.Row(id = 'container', children = []),
     ],
     id="page-content",
@@ -188,8 +195,6 @@ def update_simulator(*args):
 def update_mvars_slider(inputs,sliders):
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-    print(len(inputs))
-    print(len(sliders))
 
     if button_id:
         if 'input' in button_id:
@@ -198,11 +203,17 @@ def update_mvars_slider(inputs,sliders):
             inputs[:len(sliders)] = sliders
 
         l1 = len(mysim.model.mvars.from_input['Value']) # cheap but works
-        l2 = len(mysim.subroutines.subrvars.from_input['Value'])+l1
+        try:
+            l2 = len(mysim.subroutines.subrvars.from_input['Value'])+l1
+        except:
+            l2 = l1
         l3 = len(mysim.model.params.from_input['Value'])+l2
 
         mysim.model.mvars.from_input['Value'].iloc[:] = inputs[:l1]
-        mysim.subroutines.subrvars.from_input['Value'].iloc[:] = inputs[l1:l2]
+        try:
+            mysim.subroutines.subrvars.from_input['Value'].iloc[:] = inputs[l1:l2]
+        except:
+            pass
         mysim.model.params.from_input['Value'].iloc[:] = inputs[l2:l3]
         mysim.simvars.from_input['Value'].iloc[:] = inputs[l3:]
 
