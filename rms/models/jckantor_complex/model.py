@@ -1,4 +1,5 @@
-from engine import Subroutine
+import rms.engine
+from rms.engine import Subroutine
 from pyfoomb import BioprocessModel
 import numpy as np
 

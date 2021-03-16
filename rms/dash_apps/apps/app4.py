@@ -2,12 +2,14 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-import dash_apps.shared_components as dsc
-from dash_apps.shared_styles import *
-from dash_apps.apps.myapp import app
+import rms.dash_apps
+import rms.dash_apps.shared_components as dsc
+from rms.dash_apps.shared_styles import *
+from rms.dash_apps.apps.myapp import app
 import dash
 
-from engine import Model, Simulator
+import rms.engine
+from rms.engine import Model, Simulator
 import os
 import plotly.express as px
 
