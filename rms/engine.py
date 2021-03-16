@@ -353,7 +353,7 @@ class Simulator(Caretaker):
             # update, integrate, log
             self.simulators[None].set_parameters(self.model.get_vars_dict(t))
 
-            if self.integrator == 'CVODE':
+            if self.integrator == 'CVODE': # TODO: make sure this works
                 results = self.simulate(np.array([t,t+self.dt]))
                 # log data
                 for i,(r,k) in enumerate(zip(results, state.keys())):
@@ -433,6 +433,7 @@ class Subroutine():
         self.model.update_mvars_from_dict(self.model_parameters)
 
 # this dsnt work
+
 # class RMS_Model(BioprocessModel):
 #     '''
 #     Casting BioprocessModel to have consistent nomenclature

@@ -49,7 +49,7 @@ def test_load_each_simulator():
             ok = False; er = e
         assert ok, er
 
-def test_dash():
+def test_simple_dash():
     try:
         import dash_html_components as html
         app.layout = html.Div(id="nully-wrapper", children=0)
@@ -58,7 +58,32 @@ def test_dash():
         ok = False; er = e
     assert ok, er
 
-test_dash()
+def test_rms_dash():
+    try:
+        import dash_core_components as dcc
+        import dash_html_components as html
+        from dash.dependencies import Input, Output
+        import dash_bootstrap_components as dbc
+        from dash_apps.apps import app5
+        import dash_apps.shared_callbacks
+        from dash_apps.shared_components import navbar, sidebar, sidebar_btn
+
+        app.layout = html.Div([
+            dcc.Location(id='url', refresh = False),
+            navbar,
+            sidebar,
+            sidebar_btn,
+            html.Div(id='page', children = app5.layout)
+        ])
+
+        ok = True; er = 'all good'
+    except Exception as e:
+        ok = False; er = e
+    assert ok, er
+
+
+test_rms_dash()
+test_simple_dash()
 test_load_each_model()
 test_handle_load_each_model()
 test_load_each_simulator()
