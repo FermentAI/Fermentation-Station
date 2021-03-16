@@ -41,11 +41,7 @@ If no errors arise, launch the app.
 bash launch.sh
 ```
 ## Dash App Tutorial:
-Once you have cloned the repository and installed the packages, the Dash app can be used to interact with different models to produce graphs of reactor variables. After launching the app, copy the URL to your browser. From there, you should see the interface:
-\
-\
-\
-![RMS_Interface](https://user-images.githubusercontent.com/76971900/111372420-dc3a0a00-8657-11eb$
+Once you have cloned the repository and installed the packages, the Dash app can be used to interact with different models to produce graphs of reactor variables. After launching the app, copy the URL to your browser. From there, you should see the interface.
 
 The app loads a single chart without any lines or plots. From that point, you can choose a model from the dropdown menu at the top. Then, click add chart to produce multiple charts and select the chart type (line or bar) or variables you want to plot. Following this click the buttons above to see variables and manipulate their settings with the slider. Finally, rum simulation and see how the charts you added change according to you model and variable settings. Play around with it as much as you like.
 
