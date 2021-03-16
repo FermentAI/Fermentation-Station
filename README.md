@@ -22,7 +22,7 @@ This DASH app is useful for selecting different chemical reactor models and play
 - plotly [express](https://pypi.org/project/plotly-express/)
 - [pandas](https://pandas.pydata.org/docs/getting_started/install.html)
 
-## How to Install
+## How to Install and Run
 Clone this repository:
 
 ```sh
@@ -55,7 +55,6 @@ The app loads a single chart without any lines or plots. From that point, you ca
 - [ ] Play around with the time feature to see your reactor's behavior at different time points.
 - [ ] Add more graphs or change the parameters and run another simulation.
 
-## Running Tests:
 
 ## Code Structure
 ```
@@ -100,18 +99,6 @@ The app loads a single chart without any lines or plots. From that point, you ca
 +---simulator_vars.csv
 +---test.py
 ```
-
-## Running Tests
-From the root directory: 
-```
-./runTests
-```
-If the executable file does not work, you can run the tests with the command: 
-
-```
-pytest --cov-report term --cov=diffcapanalyzer tests/
-```
-
 
 ## Our Work Process:
 - [ ] Review other reactor model simulators: simple, complex, and industrial penicillin.
