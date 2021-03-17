@@ -1,6 +1,6 @@
 # Reactor Modeling Sandbox
 [![Build Status](https://www.travis-ci.com/FermentAI/Reactor-Modeling-Sandbox.svg?branch=main)](https://www.travis-ci.com/github/FermentAI/Reactor-Modeling-Sandbox)
-[![Coverage Status](https://coveralls.io/repos/github/FermentAI/Reactor-Modeling-Sandbox/badge.svg)](https://coveralls.io/github/FermentAI/Reactor-Modeling-Sandbox)
+[![Coverage Status](https://coveralls.io/repos/github/FermentAI/Reactor-Modeling-Sandbox/badge.svg?branch=main)](https://coveralls.io/github/FermentAI/Reactor-Modeling-Sandbox?branch=main)
 
 ## App for Dynamic Model Exploration and Data Visualization
 This DASH app is useful for selecting different chemical reactor models and playing with reactor parameters, such as Coolant Flow Rate, Reactor Temperature, Concentration, and more. It visualizes data from these selections as time plots of different variables, based on the user's preferences. Differential equations are used in each model to represent the chemical reactions occurring in the reactor. Understanding the way a reactor performs based on how different variables are manipulated can help with the design of more complex reactors. Our hope is that this DASH app can be used as a teaching tool for those looking to understand how a reactor works and how to adjust different parameters to meet the expected reaction products.
@@ -36,7 +36,7 @@ Next, check for any errors. If there are, open an issue on github.
 ```sh
 https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
 ```
-If no errors arise, launch the app.
+If no errors arise, launch the app. It will take a sec.
 ```sh
 source launch.sh
 ```
