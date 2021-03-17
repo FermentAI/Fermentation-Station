@@ -1,9 +1,10 @@
+from dash_apps.apps.myapp import app
+
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
-from dash_apps.apps.myapp import app
 from dash_apps.apps import main, dummy
 import dash_apps.shared_callbacks
 from dash_apps.shared_components import navbar, sidebar, sidebar_btn

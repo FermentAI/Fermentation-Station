@@ -28,9 +28,9 @@ Clone this repository:
 ```sh
 git clone https://github.com/FermentAI/Reactor-Modeling-Sandbox.git
 ```
-Inside of the repository, run the setup.sh file:
+Inside of the repository, run the setup.sh file in your favorite bash shell:
 ```sh
-bash setup.sh
+source setup.sh
 ```
 Next, check for any errors. If there are, open an issue on github.
 ```sh
@@ -38,7 +38,7 @@ https://github.com/FermentAI/Reactor-Modeling-Sandbox/issues
 ```
 If no errors arise, launch the app.
 ```sh
-bash launch.sh
+source launch.sh
 ```
 ## Dash App Tutorial:
 Once you have cloned the repository and installed the packages, the Dash app can be used to interact with different models to produce graphs of reactor variables. After launching the app, copy the URL to your browser. From there, you should see the interface.
